@@ -9,6 +9,8 @@
 
 * Remove double click full screen
 
+* Add regex to text box to only allow letters and commas. 
+
 * Can add a forced stop to the video 2 seconds in or so to get split second perception.
 
 Pass prolific ID via URL
