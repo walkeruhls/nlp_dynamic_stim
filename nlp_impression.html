@@ -1,99 +1,86 @@
 <!DOCTYPE html>
-<html lang = 'en-us'>
+<html lang='en-us'>
 
-  <head>
-  	<meta charset="UTF-8">
-    <title>Experiment</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
+<head>
+	<meta charset="UTF-8">
+	<title>Experiment</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+	<script src="https://unpkg.com/@popperjs/core@2"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
 
-    
 
 
-    <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-    <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
-  </head>
 
-  <style>
+	<!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+	<!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
+</head>
 
-		textarea { height: auto}
-		button {border: none; background: none;}
-  	
-  </style>
+<style>
+	textarea {
+		height: auto
+	}
 
-  <body>
-  	<div class="container-fluid">
-  		<div class="row">
-  			<div class="col-6 justify-content-center mx-auto">
-	  			<div class="header mx-auto text-center">
-			      <p class="display-8"><b>Use words to describe who this person might be, what they might be thinking, and/or what they might be feeling etc.</b></p>
-	    		</div>
-    		</div>
+	button {
+		border: none;
+		background: none;
+	}
+</style>
+
+<body>
+	<div class="container-fluid margin-top-4">
+		<div id="experiment-body">
+			<div class="row">
+				<div class="col-6 justify-content-center mx-auto">
+					<div class="header mx-auto text-center">
+						<p class="display-8"><b>Use words to describe who this person might be, what they might be
+								thinking, and/or what they might be feeling etc.</b></p>
+					</div>
+				</div>
 			</div>
-  			
-  		<div id="vid_row" class="row">
 
-	  		<div id="vid_col" class="col-6 d-flex justify-content-center mx-auto my-5">
-	  			
-					<video
-				      id="main_video"
-				      class="video-js vjs-big-play-centered"
-				      controls
-				      preload="auto"
-				      data-setup='{"fluid": true, "controlBar": {"pictureInPictureToggle": false, "fullscreenToggle": false}, "userActions": {"doubleClick": false}}'
-				    >
-			      <source src="sample_audition_tape.mp4" type="video/mp4" />
-			      <p class="vjs-no-js">
-			        To view this video please enable JavaScript, and consider upgrading to a
-			        web browser that
-			        <a href="https://videojs.com/html5-video-support/" target="_blank"
-			          >supports HTML5 video</a
-			        >
-			      </p>
-			    </video>
-		    </div>
+			<div id="vid_row" class="row">
+
+				<div id="vid_col" class="col-6 d-flex justify-content-center mx-auto my-5">
+
+					<video id="main_video" class="video-js vjs-big-play-centered" controls preload="auto"
+						data-setup='{"fluid": true, "controlBar": {"pictureInPictureToggle": false, "fullscreenToggle": false}, "userActions": {"doubleClick": false}}'>
+						<source src="sample_audition_tape.mp4" type="video/mp4" />
+						<p class="vjs-no-js">
+							To view this video please enable JavaScript, and consider upgrading to a
+							web browser that
+							<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+						</p>
+					</video>
+				</div>
 			</div>
 
 			<div class="row" id="response_columns">
 				<div class="col justify-content-center">
-					<table class="table table-bordered" id="favorites-table">
-				    <thead>
-				      <tr class="d-flex">
-				        <th class="col-3">Mental states</th>
-				        <th class="col-3">Traits</th>
-				        <th class="col-3">Emotions</th>
-				        <th class="col-3">Identity</th>
-				      </tr>
-				    </thead>
-				    <tbody>
-				    	<tr class="d-flex">
-					      <td class="col-3">
-					        <div class="list-group" id="mental_state_sorter">
-					          
-					        </div>
-					      </td>
-					      <td class="col-3">
-					        <div class="list-group" id="trait_sorter">
-					        
-					        </div>
-					      </td>
-					      <td class="col-3">
-					      	<div class="list-group" id="emotion_sorter">
-					        
-					        </div>
-					      </td>
-					      <td class="col-3">
-					      	<div class="list-group" id="identity_sorter">
-					        
-					        </div>
-					      </td>
-					    </tr>
+					<table class="table table-bordered">
+						<thead>
+							<tr class="d-flex justify-content-center">
+								<th class="col-3 text-center">Descriptors</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="d-flex justify-content-center">
+								<td class="col-3 text-center">
+									<div  id="desc_sorter">
 
-				    </tbody>
-				  </table>
+									</div>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
 				</div>
 			</div>
 
@@ -106,53 +93,128 @@
 			<div class="row">
 				<div class="col d-flex justify-content-center mx-auto">
 					<div id="info-form" class="survey" data-toggle="validator" role="form">
-	          <form action="javascript:submit_descript();" class="form-horizontal">
-	            <div id="description" class="form-group">
-	                <label id="user-id-text" class="control-label" for="user-id">Please ONLY use adjectives and short sentences/phrases</label>
-	                <input id="descript_input" type="textarea" class="form-control input-md" placeholder="example: happy, trustworthy, man, etc." autocomplete="off" required disabled>
-	            </div>
-	            <button id="descript_submit" type="submit" class="btn btn-primary" disabled>Submit</button>
-	          </form>
-          </div>
+						<form action="javascript:add_descript();" class="form-horizontal">
+							<div id="description" class="form-group">
+								<label id="user-id-text" class="control-label" for="user-id">Please ONLY use adjectives
+									and short sentences/phrases</label>
+								<input id="descript_input" type="textarea" class="form-control input-md"
+									placeholder="example: happy, trustworthy, man, etc." autocomplete="off" required
+									disabled>
+							</div>
+							<button id="descript_add" type="submit" class="btn btn-primary" disabled>Add</button>
+						</form>
+						<button id="descript_submit" class="btn btn-primary" disabled>Submit</button>
+					</div>
 				</div>
 			</div>
-    </div>
+		</div>
+		<div id="sorting-body" hidden>
+			<div class="row">
+				<div class="col-6 justify-content-center mx-auto">
+					<div class="header mx-auto text-center">
+						<p class="display-8"><b>Please drag-and-drop each descriptor you submitted to the most
+								appropriate of the categories below.</b></p>
+					</div>
+				</div>
+			</div>
+			<div class="row" id="sorting_columns">
+				<div class="col justify-content-center">
+					<table class="table table-bordered" id="favorites-table">
+						<thead>
+							<tr class="d-flex">
+								<th class="col-3">Mental states</th>
+								<th class="col-3">Traits</th>
+								<th class="col-3">Emotions</th>
+								<th class="col-3">Identity</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="d-flex">
+								<td class="col-3">
+									<div class="list-group" id="mental_state_sorter">
 
-  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+									</div>
+								</td>
+								<td class="col-3">
+									<div class="list-group" id="trait_sorter">
 
-  <script type="text/javascript">
+									</div>
+								</td>
+								<td class="col-3">
+									<div class="list-group" id="emotion_sorter">
 
-  	//var whereYouAt = myPlayer.currentTime();
+									</div>
+								</td>
+								<td class="col-3">
+									<div class="list-group" id="identity_sorter">
+
+									</div>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
+	<script type="text/javascript">
+
+		//var whereYouAt = myPlayer.currentTime();
 		//console.log(whereYouAt)
 
-  	$("#pause_notice").hide()
+		$("#pause_notice").hide()
 
-  	function submit_descript() {
+		var descriptors = []
+		var current_descript = []
 
-  		var input = $('#descript_input').val()
-			
-		  $('#mental_state_sorter').append('<li class="list-group-item" id='+ input + '_main> ' + input + '<button class="item_delete" type="button" id="'+ input+'">✖</button></li>')
+		var emotions = traits = mental_states = identity = null
 
-		  attach_listeners()
+		function add_descript() {
 
-  	}
+			var input = $('#descript_input').val()
 
-  	function attach_listeners() {
-			$(".item_delete").click(function() {
+			current_descript.push(input)
+
+			$('#desc_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + input + '_main> ' + input + '<button class="item_delete" type="button" id="' + input + '">✖</button></li></div>')
+
+			attach_listeners()
+			console.log(current_descript)
+
+		}
+
+		function submit_descriptors() {
+			descriptors.push.apply(descriptors, current_descript)
+			console.log(descriptors)
+			$("#desc_sorter").empty()
+			current_descript = []
+		}
+
+		function attach_listeners() {
+			$(".item_delete").click(function () {
 				console.log('delete')
+				current_descript.splice(current_descript.indexOf(item_id), 1)
 				var item_id = $(this).attr("id");
 				$("#" + item_id + "_main").remove()
+				console.log(current_descript)
+			})
+			$("#descript_submit").click(function () {
+				submit_descriptors()
 			})
 		}
 
-  	$("#main_video").on("pause", function () {
-    	$("#descript_submit").removeAttr('disabled')
-    	$("#descript_input").removeAttr('disabled')
-    	$("#pause_notice").hide()
+		$("#main_video").on("pause", function () {
+			$("#descript_submit").removeAttr('disabled')
+			$("#descript_add").removeAttr('disabled')
+			$("#descript_input").removeAttr('disabled')
+			$("#pause_notice").hide()
 		});
 
-		$("#main_video").on("play", function() {
-			$("#descript_submit").attr('disabled', 'disabled');
+		$("#main_video").on("play", function () {
+			$("#descript_submit").attr('disabled', 'disabled')
+			$("#descript_add").attr('disabled', 'disabled');
 			$("#descript_input").attr('disabled', 'disabled');
 			$("#pause_notice").show()
 		})
@@ -160,34 +222,41 @@
 		var myPlayer = videojs('main_video');
 		myPlayer.controlBar.progressControl.disable();
 
-		// sortable lists
+		myPlayer.on('ended', function () {
+			this.dispose();
+			$("#experiment-body").hide()
+			$('#sorting-body').removeAttr('hidden');
+			for (let descript of descriptors) {
+				$('#mental_state_sorter').append('<li class="list-group-item" id=' + descript + '_main> ' + descript + '<button class="item_delete" type="button" id="' + descript + '">✖</button></li>')
+			}
 
-		const emotions = Sortable.create(emotion_sorter, { 
-	    animation: 100, 
-	    group: 'shared', 
-	    draggable: '.list-group-item'
+			emotions = Sortable.create(emotion_sorter, {
+				animation: 100,
+				group: 'shared',
+				draggable: '.list-group-item'
+			});
+
+			traits = Sortable.create(trait_sorter, {
+				animation: 100,
+				group: 'shared',
+				draggable: '.list-group-item'
+			});
+
+			mental_states = Sortable.create(mental_state_sorter, {
+				animation: 100,
+				group: 'shared',
+				draggable: '.list-group-item'
+			});
+
+			identity = Sortable.create(identity_sorter, {
+				animation: 100,
+				group: 'shared',
+				draggable: '.list-group-item'
+			});
 		});
 
-		const traits = Sortable.create(trait_sorter, { 
-	    animation: 100, 
-	    group: 'shared', 
-	    draggable: '.list-group-item'
-		});
+	</script>
 
-		const mental_states = Sortable.create(mental_state_sorter, { 
-	    animation: 100, 
-	    group: 'shared', 
-	    draggable: '.list-group-item'
-		});
+</body>
 
-		const identity = Sortable.create(identity_sorter, { 
-	    animation: 100, 
-	    group: 'shared', 
-	    draggable: '.list-group-item'
-	    
-		});
-
-  </script>
-
-	</body>
 </html>
