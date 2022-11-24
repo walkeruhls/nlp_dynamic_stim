@@ -37,11 +37,14 @@ $("#start_task").click(function () {
 //console.log(whereYouAt)
 
 $("#pause_notice").hide()
+$("#too_early_notice").hide()
 
 var descriptors = []
 var current_descript = []
 
 var emotions = traits = mental_states = identity = null
+
+var recentTime = 0;
 
 function add_descript() {
 
@@ -57,10 +60,18 @@ function add_descript() {
 }
 
 function submit_descriptors() {
+    recentTime = myPlayer.currentTime()
     descriptors.push.apply(descriptors, current_descript)
     console.log(descriptors)
     $("#desc_sorter").empty()
     current_descript = []
+    myPlayer.controlBar.playToggle.enable();
+    myPlayer.options({
+        userActions: {
+          click: true
+        }
+    })
+    myPlayer.play()
 }
 
 function attach_listeners() {
@@ -76,11 +87,25 @@ function attach_listeners() {
     })
 }
 
+
 $("#main_video").on("pause", function () {
-    $("#descript_submit").removeAttr('disabled')
-    $("#descript_add").removeAttr('disabled')
-    $("#descript_input").removeAttr('disabled')
-    $("#pause_notice").hide()
+    if (myPlayer.currentTime() - recentTime <= 2) {
+        myPlayer.play()
+        $("#too_early_notice").show()
+    }
+    else {
+        $("#descript_submit").removeAttr('disabled')
+        $("#descript_add").removeAttr('disabled')
+        $("#descript_input").removeAttr('disabled')
+        $("#pause_notice").hide()
+        $("#too_early_notice").hide()
+        myPlayer.controlBar.playToggle.disable();
+        myPlayer.options({
+            userActions: {
+            click: false
+            }
+        })
+    }
 });
 
 $("#main_video").on("play", function () {

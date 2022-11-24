@@ -116,7 +116,7 @@
 
           <p><b>Don't overthink it, just go with your gut.</b></p>
 
-          <p><b>The video must be paused to make an entry. You can stop the video whenever you like.</b></p>
+          <p><b>The video must be paused to make an entry. You can stop the video whenever you like, but once you pause, you must write something before resuming.</b></p>
 
           <p>Press the button below to get started when you are ready. The first video will be a short trial for you to
             practice.
@@ -145,7 +145,7 @@
   
             <video id="main_video" class="video-js vjs-big-play-centered" controls preload="auto"
               data-setup='{"fluid": true, "controlBar": {"pictureInPictureToggle": false, "fullscreenToggle": false}, "userActions": {"doubleClick": false}}'>
-              <source src="sample_audition_tape.mp4" type="video/mp4" />
+              <source src="assets/video/sample_audition_tape.mp4" type="video/mp4" />
               <p class="vjs-no-js">
                 To view this video please enable JavaScript, and consider upgrading to a
                 web browser that
@@ -181,6 +181,11 @@
         <div class="row" id="pause_notice" style="color:red;">
           <div class="col d-flex justify-content-center mx-auto">
             <h6>Pause the video to make an entry.</h6>
+          </div>
+        </div>
+        <div class="row" id="too_early_notice" style="color:red;">
+          <div class="col d-flex justify-content-center mx-auto">
+            <h6>Please wait slightly longer before pausing.</h6>
           </div>
         </div>
         <div class="row">
