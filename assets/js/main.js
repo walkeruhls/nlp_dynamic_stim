@@ -5,7 +5,7 @@ $("#video-section").hide()
 $("#sorting-body").hide()
 
 
-var subj_id = null;
+var subj_id = null
 
 function submit_screener() {
     if ($("#english_check_input").val() == "No") {
@@ -27,99 +27,110 @@ $("#next_instruct").click(function () {
 })
 
 $("#start_task").click(function () {
-    var url = new URL(window.location.href);
-    url.searchParams.append('id', subj_id);
+    var url = new URL(window.location.href)
+    url.searchParams.append('id', subj_id)
     $("#instructions2").hide()
     $("#video-section").show()
-});
+})
 
-//var whereYouAt = myPlayer.currentTime();
+//var whereYouAt = mainVideo.currentTime()
 //console.log(whereYouAt)
 
 $("#pause_notice").hide()
 $("#too_early_notice").hide()
+$("#cannot_unpause_notice").hide()
+$("#cannot_add_notice").hide()
 
 var descriptors = []
 var current_descript = []
 
 var emotions = traits = mental_states = identity = null
 
-var recentTime = 0;
+var recentTime = -2
 
 function add_descript() {
 
     var input = $('#descript_input').val()
 
-    current_descript.push(input)
+    if (current_descript.includes(input)) {
+        $("#cannot_add_notice").show()
+    }
+    else {
+        current_descript.push(input)
 
-    $('#desc_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + input + '_main> ' + input + '<button class="item_delete" type="button" id="' + input + '">✖</button></li></div>')
+        $('#desc_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + input + '_main> ' + input + '<button class="item_delete" type="button" id="' + input + '">✖</button></li></div>')
 
-    attach_listeners()
-    console.log(current_descript)
+        attach_delete_listener(input)
+        console.log(current_descript)
+        $("#descript_submit").removeAttr('disabled')
+        $("#cannot_add_notice").hide()
+        $('#descript_input').val("")
+    }
 
 }
 
-function submit_descriptors() {
-    recentTime = myPlayer.currentTime()
+$("#descript_submit").click(function () {
+    recentTime = mainVideo.currentTime()
     descriptors.push.apply(descriptors, current_descript)
     console.log(descriptors)
     $("#desc_sorter").empty()
     current_descript = []
-    myPlayer.controlBar.playToggle.enable();
-    myPlayer.options({
+    mainVideo.controlBar.playToggle.enable()
+    mainVideo.options({
         userActions: {
-          click: true
+            click: true
         }
     })
-    myPlayer.play()
-}
+    $("#cannot_unpause_notice").hide()
+    mainVideo.play()
+})
 
-function attach_listeners() {
-    $(".item_delete").click(function () {
+function attach_delete_listener(input) {
+    $("#" + input).click(function() {
         console.log('delete')
+        let item_id = $(this).attr("id")
         current_descript.splice(current_descript.indexOf(item_id), 1)
-        var item_id = $(this).attr("id");
         $("#" + item_id + "_main").remove()
         console.log(current_descript)
-    })
-    $("#descript_submit").click(function () {
-        submit_descriptors()
+        if (current_descript = []) {
+            $("#descript_submit").attr('disabled','disabled')
+        }
     })
 }
 
 
 $("#main_video").on("pause", function () {
-    if (myPlayer.currentTime() - recentTime <= 2) {
-        myPlayer.play()
+    if (mainVideo.currentTime() - recentTime <= 2) {
+        mainVideo.play()
         $("#too_early_notice").show()
     }
     else {
-        $("#descript_submit").removeAttr('disabled')
         $("#descript_add").removeAttr('disabled')
         $("#descript_input").removeAttr('disabled')
         $("#pause_notice").hide()
         $("#too_early_notice").hide()
-        myPlayer.controlBar.playToggle.disable();
-        myPlayer.options({
+        $("#cannot_unpause_notice").show()
+        mainVideo.controlBar.playToggle.disable()
+        mainVideo.options({
             userActions: {
-            click: false
+                click: false
             }
         })
     }
-});
+})
 
 $("#main_video").on("play", function () {
     $("#descript_submit").attr('disabled', 'disabled')
-    $("#descript_add").attr('disabled', 'disabled');
-    $("#descript_input").attr('disabled', 'disabled');
+    $("#descript_add").attr('disabled', 'disabled')
+    $("#descript_input").attr('disabled', 'disabled')
     $("#pause_notice").show()
 })
 
-var myPlayer = videojs('main_video');
-myPlayer.controlBar.progressControl.disable();
+var mainVideo = videojs('main_video')
+mainVideo.controlBar.progressControl.disable()
 
-myPlayer.on('ended', function () {
-    this.dispose();
+mainVideo.on('ended', function () {
+    this.dispose()
     $("#experiment-body").hide()
     $('#sorting-body').show()
     for (let descript of descriptors) {
@@ -130,23 +141,23 @@ myPlayer.on('ended', function () {
         animation: 100,
         group: 'shared',
         draggable: '.list-group-item'
-    });
+    })
 
     traits = Sortable.create(trait_sorter, {
         animation: 100,
         group: 'shared',
         draggable: '.list-group-item'
-    });
+    })
 
     mental_states = Sortable.create(mental_state_sorter, {
         animation: 100,
         group: 'shared',
         draggable: '.list-group-item'
-    });
+    })
 
     identity = Sortable.create(identity_sorter, {
         animation: 100,
         group: 'shared',
         draggable: '.list-group-item'
-    });
-});
+    })
+})

@@ -4,30 +4,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Experiment</title>
-	<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin="anonymous"></script>
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
   <script defer src="https://unpkg.com/@popperjs/core@2"></script>
   <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-		crossorigin="anonymous"></script>
-	<script defer src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
+    integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+    crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
   <script defer src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
   <script defer src="assets/js/main.js"></script>
 </head>
 
 <style>
-	textarea {
-		height: auto
-	}
+  textarea {
+    height: auto
+  }
 
-	button {
-		border: none;
-		background: none;
-	}
+  button {
+    border: none;
+    background: none;
+  }
 </style>
 
 <body>
@@ -116,7 +116,8 @@
 
           <p><b>Don't overthink it, just go with your gut.</b></p>
 
-          <p><b>The video must be paused to make an entry. You can stop the video whenever you like, but once you pause, you must write something before resuming.</b></p>
+          <p><b>The video must be paused to make an entry. You can stop the video whenever you like, but once you pause,
+              you must write something before resuming.</b></p>
 
           <p>Press the button below to get started when you are ready. The first video will be a short trial for you to
             practice.
@@ -128,9 +129,9 @@
       </div>
     </div>
 
-    <div class="container-fluid margin-top-4" id="video-section">
-      <div id="experiment-body">
-        <div class="row">
+    <div id="video-section">
+      <div id="experiment-body" class="card">
+        <div class="row pt-4 card-header">
           <div class="col-6 justify-content-center mx-auto">
             <div class="header mx-auto text-center">
               <p class="display-8"><b>Use words to describe who this person might be, what they might be
@@ -138,76 +139,86 @@
             </div>
           </div>
         </div>
-  
-        <div id="vid_row" class="row">
-  
-          <div id="vid_col" class="col-6 d-flex justify-content-center mx-auto my-5">
-  
-            <video id="main_video" class="video-js vjs-big-play-centered" controls preload="auto"
-              data-setup='{"fluid": true, "controlBar": {"pictureInPictureToggle": false, "fullscreenToggle": false}, "userActions": {"doubleClick": false}}'>
-              <source src="assets/video/sample_audition_tape.mp4" type="video/mp4" />
-              <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a
-                web browser that
-                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-              </p>
-            </video>
+        <div class="card-body">
+          <div id="vid_row" class="row">
+
+            <div id="vid_col" class="col-6 d-flex justify-content-center mx-auto my-1">
+
+              <video id="main_video" class="video-js vjs-big-play-centered" controls preload="auto"
+                data-setup='{"fluid": true, "controlBar": {"pictureInPictureToggle": false, "fullscreenToggle": false}, "userActions": {"doubleClick": false}}'>
+                <source src="assets/video/sample_audition_tape.mp4" type="video/mp4" />
+                <p class="vjs-no-js">
+                  To view this video please enable JavaScript, and consider upgrading to a
+                  web browser that
+                  <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+              </video>
+            </div>
           </div>
-        </div>
-  
-        <div class="row" id="response_columns">
-          <div class="col justify-content-center">
-            <table class="table table-bordered">
-              <thead>
-                <tr class="d-flex justify-content-center">
-                  <th class="col-3 text-center">Descriptors</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="d-flex justify-content-center">
-                  <td class="col-3 text-center">
-                    <div  id="desc_sorter">
-  
-                    </div>
-                  </td>
-                </tr>
-  
-              </tbody>
-            </table>
+
+          <div class="row" id="response_columns">
+            <div class="col justify-content-center">
+              <table class="table">
+                <thead>
+                  <tr class="d-flex justify-content-center">
+                    <th class="col-6 text-center">Descriptors</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="d-flex justify-content-center">
+                    <td class="col-6 text-center">
+                      <div id="desc_sorter">
+
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-  
-  
-        <div class="row" id="pause_notice" style="color:red;">
-          <div class="col d-flex justify-content-center mx-auto">
-            <h6>Pause the video to make an entry.</h6>
+
+
+          <div class="row" id="pause_notice" style="color:red;">
+            <div class="col d-flex justify-content-center mx-auto">
+              <h6>Pause the video to make an entry.</h6>
+            </div>
           </div>
-        </div>
-        <div class="row" id="too_early_notice" style="color:red;">
-          <div class="col d-flex justify-content-center mx-auto">
-            <h6>Please wait slightly longer before pausing.</h6>
+          <div class="row" id="too_early_notice" style="color:red;">
+            <div class="col d-flex justify-content-center mx-auto">
+              <h6>Please wait slightly longer before pausing.</h6>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col d-flex justify-content-center mx-auto">
-            <div id="info-form" class="survey" data-toggle="validator" role="form">
-              <form action="javascript:add_descript();" class="form-horizontal">
-                <div id="description" class="form-group">
-                  <label id="user-id-text" class="control-label" for="user-id">Please ONLY use adjectives
-                    and short sentences/phrases</label>
-                  <input id="descript_input" type="textarea" class="form-control input-md"
-                    placeholder="example: happy, trustworthy, man, etc." autocomplete="off" required
-                    disabled>
-                </div>
-                <button id="descript_add" type="submit" class="btn btn-primary" disabled>Add</button>
-              </form>
-              <button id="descript_submit" class="btn btn-primary" disabled>Submit</button>
+          <div class="row" id="cannot_unpause_notice" style="color:red;">
+            <div class="col d-flex justify-content-center mx-auto">
+              <h6>You cannot unpause until you submit.</h6>
+            </div>
+          </div>
+          <div class="row" id="cannot_add_notice" style="color:red;">
+            <div class="col d-flex justify-content-center mx-auto">
+              <h6>You cannot add an item already in the list.</h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col d-flex justify-content-center mx-auto text-center">
+              <div id="info-form" class="survey" data-toggle="validator" role="form">
+                <form action="javascript:add_descript();" class="form-horizontal">
+                  <div id="description" class="form-group">
+                    <label id="user-id-text" class="control-label" for="user-id">Please ONLY use adjectives
+                      and short sentences/phrases</label>
+                    <input id="descript_input" type="textarea" class="form-control input-md"
+                      placeholder="example: happy, trustworthy, man, etc." autocomplete="off" required disabled>
+                  </div>
+                  <button id="descript_add" type="submit" class="btn btn-primary my-1" disabled>Add</button>
+                </form>
+                <button id="descript_submit" class="btn btn-primary my-1" disabled>Submit</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div id="sorting-body">
-        <div class="row">
+        <div class="row pt-4">
           <div class="col-6 justify-content-center mx-auto">
             <div class="header mx-auto text-center">
               <p class="display-8"><b>Please drag-and-drop each descriptor you submitted to the most
@@ -230,26 +241,26 @@
                 <tr class="d-flex">
                   <td class="col-3">
                     <div class="list-group" id="mental_state_sorter">
-  
+
                     </div>
                   </td>
                   <td class="col-3">
                     <div class="list-group" id="trait_sorter">
-  
+
                     </div>
                   </td>
                   <td class="col-3">
                     <div class="list-group" id="emotion_sorter">
-  
+
                     </div>
                   </td>
                   <td class="col-3">
                     <div class="list-group" id="identity_sorter">
-  
+
                     </div>
                   </td>
                 </tr>
-  
+
               </tbody>
             </table>
           </div>
