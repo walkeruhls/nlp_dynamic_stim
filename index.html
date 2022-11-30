@@ -1,146 +1,262 @@
 <!DOCTYPE html>
-<html lang = 'en-us'>
+<html lang='en-us'>
 
-  <head>
-  	<meta charset="UTF-8">
-    <title>Experiment</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<head>
+  <meta charset="UTF-8">
+  <title>Experiment</title>
+	<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+		integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script defer src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+  <script defer src="https://unpkg.com/@popperjs/core@2"></script>
+  <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+		integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+		crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
+  <script defer src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+  <script defer src="assets/js/main.js"></script>
+</head>
 
-  </head>
+<style>
+	textarea {
+		height: auto
+	}
 
-  <body>
+	button {
+		border: none;
+		background: none;
+	}
+</style>
 
-    <div id="welcome" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h1 class="display-4">Welcome to the experiment</h1>
-      <p class="lead">Please answer the following questions to determine your elibility.</p>
+<body>
+
+  <div id="welcome" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Welcome to the experiment</h1>
+    <p class="lead">Please answer the following questions to determine your elibility.</p>
+  </div>
+
+  <div class="container-fluid">
+    <div id="screener" class="row">
+      <div class="col d-flex justify-content-center mx-auto">
+        <div id="info-form" class="survey" data-toggle="validator" role="form">
+          <form action="javascript:submit_screener();" class="form-horizontal">
+            <div id="prolific_id_group" class="form-group">
+              <label id="prolific_id_label" class="control-label" for="prolific_id">Please enter your Prolific ID
+                correctly.</label>
+              <input id="prolific_id" type="text" class="form-control" autocomplete="off" required>
+            </div>
+
+            <div id="english_check_group" class="form-group">
+              <div class="form-group">
+                <label for="english_check_input">Are you fluent in English?</label>
+                <select class="form-control" id="english_check_input" required>
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <button id="screen_submit" type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
+      </div>
     </div>
 
-    <div class="container-fluid">
-      <div id="screener" class="row">
-        <div class="col d-flex justify-content-center mx-auto">
-          <div id="info-form" class="survey" data-toggle="validator" role="form">
-            <form action="javascript:submit_screener();" class="form-horizontal">
-              <div id="prolific_id_group" class="form-group">
-                <label id="prolific_id_label" class="control-label" for="prolific_id">Please enter your Prolific ID correctly.</label>
-                <input id="prolific_id" type="text" class="form-control" autocomplete="off" required>
-              </div>
-              
-              <div id="english_check_group" class="form-group">
-                <div class="form-group">
-                  <label for="english_check_input">Are you fluent in English?</label>
-                  <select class="form-control" id="english_check_input" required>
-                    <option>No</option>
-                    <option>Yes</option>
-                  </select>
-                </div>
-              </div>
+    <div id="reject" class="row">
+      <div class="col d-flex justify-content-center mx-auto">
+        <h1>Thank you for your interest. Unfortunately, you are not eligible for this task. We appreciate it if you do
+          not complete this experiment.</h1>
+      </div>
+    </div>
 
-              <button id="screen_submit" type="submit" class="btn btn-primary">Submit</button>
-            </form>
+    <div id="instructions1" class="row">
+      <div class="col-8 justify-content-center mx-auto">
+        <div>
+          <div id="instruction_title" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Instructions</h1>
+            <p class="lead" style="color:red;">Please read the following carefully</p>
+          </div>
+          <div class="alert alert-info text-center">
+            <h1> Summary </h1>
+            <p>In this experiment, you will be asked to form impressions while watching a video of a person.</p>
+            <p>You will watch XXXXX videos. Each video will contain different people doing different things.</p>
+            <p>Your job is to write down any impressions you form about the people in the video.</p>
           </div>
 
+          <p>You will be shown a video player. Underneath the video player, there will be a textbox.</p>
+          <p>For example, if you think the person is being annoying, pause the video and briefly write down your
+            thoughts.</p>
+
+          <p>We are interested in any type of impression you might form about this person, including who <b>you think
+              they are, who they identity as, what type of personality they have, what they are thinking, what they are
+              feeling, etc.</b></p>
+
+          <button id="next_instruct" type="submit" class="btn btn-primary">Next</button>
+
         </div>
       </div>
+    </div>
 
-      <div id="reject" class="row">
-        <div class="col d-flex justify-content-center mx-auto">
-          <h1>Thank you for your interest. Unfortunately, you are not eligible for this task. We appreciate it if you do not complete this experiment.</h1>
-        </div>
-      </div>
-
-      <div id="instructions1" class="row">
-        <div class="col-8 justify-content-center mx-auto">
-          <div>
-            <div id="instruction_title" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-              <h1 class="display-4">Instructions</h1>
-              <p class="lead" style="color:red;">Please read the following carefully</p>
-            </div>
-            <div class="alert alert-info text-center">
-              <h1> Summary </h1>
-              <p>In this experiment, you will be asked to form impressions while watching a video of a person.</p>
-              <p>You will watch XXXXX videos. Each video will contain different people doing different things.</p>
-              <p>Your job is to write down any impressions you form about the people in the video.</p>
-            </div>
-
-            <p>You will be shown a video player. Underneath the video player, there will be a textbox.</p>
-            <p>For example, if you think the person is being annoying, pause the video and briefly write down your thoughts.</p>
-
-            <p>We are interested in any type of impression you might form about this person, including who <b>you think they are, who they identity as, what type of personality they have, what they are thinking, what they are feeling, etc.</b></p>
-
-            <button id="next_instruct" type="submit" class="btn btn-primary">Next</button>
-
+    <div id="instructions2" class="row">
+      <div class="col-8 justify-content-center mx-auto">
+        <div>
+          <div id="instruction_title" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Instructions</h1>
+            <p class="lead" style="color:red;">Please read the following carefully</p>
           </div>
-        </div>
-      </div>
 
-      <div id="instructions2" class="row">
-        <div class="col-8 justify-content-center mx-auto">
-          <div>
-            <div id="instruction_title" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-              <h1 class="display-4">Instructions</h1>
-              <p class="lead" style="color:red;">Please read the following carefully</p>
-            </div>
-        
-            <p>Anything that comes to mind is great! Critically, you do not need to touch on all of these potential types of impression each time; just go with whatever comes to mind!</p>
+          <p>Anything that comes to mind is great! Critically, you do not need to touch on all of these potential types
+            of impression each time; just go with whatever comes to mind!</p>
 
-            <p>We ask that you respond using adjectives, or short phrases or sentences. We ask that these be separated by commas. Ex. short girl, excited, likes to pet dogs</p>
+          <p>We ask that you respond using adjectives, or short phrases or sentences. We ask that these be separated by
+            commas. Ex. short girl, excited, likes to pet dogs</p>
 
-            <p><b>Don't overthink it, just go with your gut.</b></p>
+          <p><b>Don't overthink it, just go with your gut.</b></p>
 
-            <p><b>The video must be paused to make an entry. You can stop the video whenever you like.</b></p>
+          <p><b>The video must be paused to make an entry. You can stop the video whenever you like, but once you pause, you must write something before resuming.</b></p>
 
-            <p>Press the button below to get started when you are ready. The first video will be a short trial for you to practice.<p>
+          <p>Press the button below to get started when you are ready. The first video will be a short trial for you to
+            practice.
+          <p>
 
             <button id="start_task" type="submit" class="btn btn-success btn-lg btn-block">Let's get started</button>
 
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid margin-top-4" id="video-section">
+      <div id="experiment-body">
+        <div class="row">
+          <div class="col-6 justify-content-center mx-auto">
+            <div class="header mx-auto text-center">
+              <p class="display-8"><b>Use words to describe who this person might be, what they might be
+                  thinking, and/or what they might be feeling etc.</b></p>
+            </div>
+          </div>
+        </div>
+  
+        <div id="vid_row" class="row">
+  
+          <div id="vid_col" class="col-6 d-flex justify-content-center mx-auto my-5">
+  
+            <video id="main_video" class="video-js vjs-big-play-centered" controls preload="auto"
+              data-setup='{"fluid": true, "controlBar": {"pictureInPictureToggle": false, "fullscreenToggle": false}, "userActions": {"doubleClick": false}}'>
+              <source src="assets/video/sample_audition_tape.mp4" type="video/mp4" />
+              <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+              </p>
+            </video>
+          </div>
+        </div>
+  
+        <div class="row" id="response_columns">
+          <div class="col justify-content-center">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="d-flex justify-content-center">
+                  <th class="col-3 text-center">Descriptors</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="d-flex justify-content-center">
+                  <td class="col-3 text-center">
+                    <div  id="desc_sorter">
+  
+                    </div>
+                  </td>
+                </tr>
+  
+              </tbody>
+            </table>
+          </div>
+        </div>
+  
+  
+        <div class="row" id="pause_notice" style="color:red;">
+          <div class="col d-flex justify-content-center mx-auto">
+            <h6>Pause the video to make an entry.</h6>
+          </div>
+        </div>
+        <div class="row" id="too_early_notice" style="color:red;">
+          <div class="col d-flex justify-content-center mx-auto">
+            <h6>Please wait slightly longer before pausing.</h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col d-flex justify-content-center mx-auto">
+            <div id="info-form" class="survey" data-toggle="validator" role="form">
+              <form action="javascript:add_descript();" class="form-horizontal">
+                <div id="description" class="form-group">
+                  <label id="user-id-text" class="control-label" for="user-id">Please ONLY use adjectives
+                    and short sentences/phrases</label>
+                  <input id="descript_input" type="textarea" class="form-control input-md"
+                    placeholder="example: happy, trustworthy, man, etc." autocomplete="off" required
+                    disabled>
+                </div>
+                <button id="descript_add" type="submit" class="btn btn-primary" disabled>Add</button>
+              </form>
+              <button id="descript_submit" class="btn btn-primary" disabled>Submit</button>
+            </div>
           </div>
         </div>
       </div>
-
-      
-      
-
-
+      <div id="sorting-body">
+        <div class="row">
+          <div class="col-6 justify-content-center mx-auto">
+            <div class="header mx-auto text-center">
+              <p class="display-8"><b>Please drag-and-drop each descriptor you submitted to the most
+                  appropriate of the categories below.</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="sorting_columns">
+          <div class="col justify-content-center">
+            <table class="table table-bordered" id="favorites-table">
+              <thead>
+                <tr class="d-flex">
+                  <th class="col-3">Mental states</th>
+                  <th class="col-3">Traits</th>
+                  <th class="col-3">Emotions</th>
+                  <th class="col-3">Identity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="d-flex">
+                  <td class="col-3">
+                    <div class="list-group" id="mental_state_sorter">
+  
+                    </div>
+                  </td>
+                  <td class="col-3">
+                    <div class="list-group" id="trait_sorter">
+  
+                    </div>
+                  </td>
+                  <td class="col-3">
+                    <div class="list-group" id="emotion_sorter">
+  
+                    </div>
+                  </td>
+                  <td class="col-3">
+                    <div class="list-group" id="identity_sorter">
+  
+                    </div>
+                  </td>
+                </tr>
+  
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
-  </body>
-
-  <script>
-
-    $("#reject").hide()
-    $("#instructions1").hide()
-    $("#instructions2").hide()
-
-
-    var subj_id = null;
-
-    function submit_screener() {
-      if ($("#english_check_input").val() == "No") {
-        $("#reject").show()
-        $("#screener").hide()
-      }
-
-      else {
-        subj_id = $("#prolific_id").val()
-        $("#screener").hide()
-        $("#instructions1").show()
-        $("#welcome").hide()
-      }
-    }
-
-    $("#next_instruct").click(function() { 
-      $("#instructions1").hide()
-      $("#instructions2").show()
-    })
-
-    $("#start_task").click(function() {
-      window.location.href = 'nlp_impression.html?id=' + subj_id;
-    });
-
-    
-
-  </script>
+  </div>
+</body>
 
 </html>
