@@ -1,16 +1,22 @@
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 var logger = require('morgan');
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
-var firebase = require("firebase/app");
-
+const firebase = require("firebase/app");
+const firestore = require("firebase/firestore");
 const functions = require('firebase-functions');
+
+const jsonParser = bodyParser.json();
+
+const urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -42,6 +48,22 @@ const firebaseConfig = {
 
 var app = express();
 const firebase_app = firebase.initializeApp(firebaseConfig);
+
+const db = firestore.getFirestore(app);
+
+app.post("/request", urlencodedParser, (req, res) => {
+  console.log(req.body)
+  
+  /* db.collection("descriptors").add(req.body)
+  .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id);
+  })
+  .catch((error) => {
+      console.error("Error adding document: ", error);
+  });
+
+  return "Success!"; */
+})
 
 app.use(logger('dev'));
 app.use(express.json());
