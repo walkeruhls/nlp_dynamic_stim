@@ -1,12 +1,10 @@
-#!/usr/bin/env node
+#!/usr/bin/env node/**
 
-/**
- * Module dependencies.
- */
+import app from '../app';
 
-var app = require('../app');
-var debug = require('debug')('nlp-dynamic-stim:server');
-var http = require('http');
+import debugFactory from 'debug';
+const debug = debugFactory('nlp-dynamic-stim:server');
+import http from 'http';
 
 /**
  * Get port from environment and store in Express.
