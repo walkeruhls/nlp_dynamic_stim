@@ -3,16 +3,19 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
-import indexRouter from './routes/index';
-import usersRouter from './routes/users';
+import indexRouter from './routes/index.js';
+import usersRouter from './routes/users.js';
+import {fileURLToPath} from 'url';
 
-// Firebase App (the core Firebase SDK) is always required and
-// must be listed before other Firebase SDKs
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
-import firebase from 'firebase/app';
 
-import firestore from 'firebase/firestore';
-import functions from 'firebase-functions';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+console.log(__filename)
+console.log(__dirname)
 
 const jsonParser = bodyParser.json();
 
@@ -46,30 +49,28 @@ const firebaseConfig = {
 
 // Initialize Firebase
 
-var app = express();
-const firebase_app = firebase.initializeApp(firebaseConfig);
+const app = express();
+const firebase_app = initializeApp(firebaseConfig);
 
-const db = firestore.getFirestore(app);
+const db = getFirestore(firebase_app);
+
 
 app.post("/request", urlencodedParser, (req, res) => {
   console.log(req.body)
-  
-  /* db.collection("descriptors").add(req.body)
-  .then((docRef) => {
-      console.log("Document written with ID: ", docRef.id);
-  })
-  .catch((error) => {
-      console.error("Error adding document: ", error);
-  });
 
-  return "Success!"; */
+  try {
+    const docRef = addDoc(collection(db, "descriptors"), req.body);
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
 })
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
