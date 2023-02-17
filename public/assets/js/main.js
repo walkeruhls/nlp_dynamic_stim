@@ -3,6 +3,7 @@ $("#instructions1").hide()
 $("#instructions2").hide()
 $("#video-section").hide()
 $("#sorting-body").hide()
+$("#finished").hide()
 
 
 var subj_id = null
@@ -16,10 +17,20 @@ function submit_screener() {
     }
 
     else {
-        subj_id = $("#prolific_id").val()
+        subj_id = {
+            "subj_id":$("#prolific_id").val()
+        }
         $("#screener").hide()
         $("#instructions1").show()
         $("#welcome").hide()
+        $.ajax({
+            type: "POST",
+            url: "/request_subj_id",
+            data: subj_id,
+            success: function() {
+                console.log("Successfully received " + descriptors.toString())
+            }
+        })
     }
 }
 
@@ -79,8 +90,7 @@ $("#descript_submit").click(function () {
         let descriptor = {
             "name":current_terms[i],
             "timestamp":mainVideo.currentTime(),
-            "category":"",
-            "video":videos[current_vid]
+            "category":""
         }
         current_descriptors.push(descriptor)
     }
@@ -195,26 +205,31 @@ function categorizeDescriptors(category, categoryName) {
 }
 
 $("#sorting_submit").click(function () {
-    current_vid++
 
     categorizeDescriptors(emotions, "emotion")
     categorizeDescriptors(traits, "trait")
     categorizeDescriptors(mental_states, "mental_state")
     categorizeDescriptors(identity, "identity")
 
-    for (i in descriptors) {
-        $.ajax({
-            type: "POST",
-            url: "/request",
-            data: descriptors[i],
-            success: function() {
-                console.log("Successfully received " + descriptors.toString())
-            }
-        })
+    let submission = {
+        ...subj_id,
+        "data":{
+            "descriptors":descriptors
+        },
+        "video":videos[current_vid]
     }
+    $.ajax({
+        type: "POST",
+        url: "/request_trial",
+        data: submission,
+        success: function() {
+            console.log("Successfully received " + submission.toString())
+        }
+    })
     
     console.log(descriptors)
-
+    current_vid++
+    
     if (current_vid < videos.length) {
 
         descriptors = []
@@ -242,5 +257,11 @@ $("#sorting_submit").click(function () {
         $("#emotion_sorter").empty()
         $("trait_sorter").empty()
         $("identity_sorter").empty()
+    }
+    
+    else {
+        $("#instructions2").hide()
+        $("#video-section").hide()
+        $("#finished").show()
     }
 })

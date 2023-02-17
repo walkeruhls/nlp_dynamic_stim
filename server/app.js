@@ -8,7 +8,7 @@ import usersRouter from './routes/users.js';
 import {fileURLToPath} from 'url';
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 
 
@@ -16,8 +16,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 console.log(__filename)
 console.log(__dirname)
-
-const jsonParser = bodyParser.json();
 
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
 
@@ -54,12 +52,24 @@ const firebase_app = initializeApp(firebaseConfig);
 
 const db = getFirestore(firebase_app);
 
-
-app.post("/request", urlencodedParser, (req, res) => {
+app.post("/request_subj_id", urlencodedParser, (req, res) => {
   console.log(req.body)
 
   try {
-    const docRef = addDoc(collection(db, "descriptors"), req.body);
+    setDoc(doc(db, "studies/study1/participants", req.body["subj_id"]), {
+      "subj_id":req.body["subj_id"]
+    });
+    console.log("Document written with ID: " + req.body["subj_id"]);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+})
+
+app.post("/request_trial", urlencodedParser, (req, res) => {
+  console.log(req.body)
+
+  try {
+    const docRef = setDoc(doc(db, "studies/study1/participants/" + req.body["subj_id"] + "/video_responses", req.body["video"]), req.body["data"]);
     console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
