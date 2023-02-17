@@ -9,6 +9,8 @@ import {fileURLToPath} from 'url';
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 
 
 
@@ -50,6 +52,7 @@ const firebaseConfig = {
 const app = express();
 const firebase_app = initializeApp(firebaseConfig);
 
+const auth = getAuth(firebase_app);
 const db = getFirestore(firebase_app);
 
 app.post("/request_subj_id", urlencodedParser, (req, res) => {
