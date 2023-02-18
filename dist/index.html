@@ -4,34 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Experiment</title>
-  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-  <script defer
-    src="https://code.jquery.com/jquery-3.6.3.min.js"
-    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
-    crossorigin="anonymous"></script>
-  <script defer src="https://unpkg.com/@popperjs/core@2"></script>
-  <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
-    integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-    crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/gh/RubaXa/Sortable/Sortable.min.js"></script>
-  <script defer src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
-  <script defer src="assets/js/main.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script defer src="./main.js"></script>
 </head>
-
-<style>
-  textarea {
-    height: auto
-  }
-
-  button {
-    border: none;
-    background: none;
-  }
-</style>
 
 <body>
 
@@ -44,7 +18,6 @@
     <div id="screener" class="row">
       <div class="col d-flex justify-content-center mx-auto">
         <div id="info-form" class="survey" data-toggle="validator" role="form">
-          <form action="javascript:submit_screener();" class="form-horizontal">
             <div id="prolific_id_group" class="form-group">
               <label id="prolific_id_label" class="control-label" for="prolific_id">Please enter your Prolific ID
                 correctly.</label>
@@ -62,7 +35,6 @@
             </div>
 
             <button id="screen_submit" type="submit" class="btn btn-primary">Submit</button>
-          </form>
         </div>
 
       </div>
@@ -206,7 +178,7 @@
           <div class="row">
             <div class="col d-flex justify-content-center mx-auto text-center">
               <div id="info-form" class="survey" data-toggle="validator" role="form">
-                <form action="javascript:add_descript();" class="form-horizontal">
+                <form class="form-horizontal" id="add_descript_form">
                   <div id="description" class="form-group">
                     <label id="user-id-text" class="control-label" for="user-id">Please ONLY use adjectives
                       and short sentences/phrases</label>
