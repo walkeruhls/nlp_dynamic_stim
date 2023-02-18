@@ -7,17 +7,6 @@
   <script defer src="./main.js"></script>
 </head>
 
-<style>
-  textarea {
-    height: auto
-  }
-
-  button {
-    border: none;
-    background: none;
-  }
-</style>
-
 <body>
 
   <div id="welcome" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
@@ -29,7 +18,6 @@
     <div id="screener" class="row">
       <div class="col d-flex justify-content-center mx-auto">
         <div id="info-form" class="survey" data-toggle="validator" role="form">
-          <form class="form-horizontal">
             <div id="prolific_id_group" class="form-group">
               <label id="prolific_id_label" class="control-label" for="prolific_id">Please enter your Prolific ID
                 correctly.</label>
@@ -47,7 +35,6 @@
             </div>
 
             <button id="screen_submit" type="submit" class="btn btn-primary">Submit</button>
-          </form>
         </div>
 
       </div>
@@ -191,7 +178,7 @@
           <div class="row">
             <div class="col d-flex justify-content-center mx-auto text-center">
               <div id="info-form" class="survey" data-toggle="validator" role="form">
-                <form action="javascript:add_descript();" class="form-horizontal">
+                <form class="form-horizontal" id="add_descript_form">
                   <div id="description" class="form-group">
                     <label id="user-id-text" class="control-label" for="user-id">Please ONLY use adjectives
                       and short sentences/phrases</label>

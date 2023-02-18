@@ -1,12 +1,14 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, signInAnonymously } from "firebase/auth";
 import videojs from 'video.js';
 import '../scss/styles.scss'
+import '../css/style.css'
 import * as bootstrap from 'bootstrap'
 import Sortable from 'sortablejs';
 import 'video.js/dist/video-js.css';
 import * as $ from 'jquery'
+
 
 
 const firebaseConfig = {
@@ -32,6 +34,16 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+signInAnonymously(auth)
+  .then(() => {
+    // Signed in..
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ...
+  });
+
 $("#reject").hide()
 $("#instructions1").hide()
 $("#instructions2").hide()
@@ -44,7 +56,7 @@ var subj_id = null
 var videos = ["sample_audition_tape.mp4","yale_school_drama.mp4","usc_comedic_monologue.mp4"]
 var current_vid = 0
 
-$("#screen_submit").click(function() {
+$("#screen_submit").on("click", function() {
     if ($("#english_check_input").val() == "No") {
         $("#reject").show()
         $("#screener").hide()
@@ -57,23 +69,23 @@ $("#screen_submit").click(function() {
         $("#screener").hide()
         $("#instructions1").show()
         $("#welcome").hide()
-        $.ajax({
-            type: "POST",
-            url: "/request_subj_id",
-            data: subj_id,
-            success: function() {
-                console.log("Successfully received " + descriptors.toString())
-            }
-        })
+        try {
+            setDoc(doc(db, "studies/study1/participants", subj_id["subj_id"]), {
+              "subj_id":subj_id["subj_id"]
+            });
+            console.log("Document written with ID: " + subj_id["subj_id"]);
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
     }
 })
 
-$("#next_instruct").click(function () {
+$("#next_instruct").on("click", function () {
     $("#instructions1").hide()
     $("#instructions2").show()
 })
 
-$("#start_task").click(function () {
+$("#start_task").on("click", function () {
     var url = new URL(window.location.href)
     url.searchParams.append('id', subj_id)
     $("#instructions2").hide()
@@ -96,8 +108,8 @@ var emotions = null, traits = null, mental_states = null, identity = null
 
 var recentTime = -2
 
-function add_descript() {
-
+$("#add_descript_form").on( "submit", function(event) {
+    event.preventDefault();
     var input = $('#descript_input').val()
 
     if (current_terms.includes(input)) {
@@ -115,9 +127,9 @@ function add_descript() {
         $('#descript_input').val("")
     }
 
-}
+})
 
-$("#descript_submit").click(function () {
+$("#descript_submit").on("click", function () {
     recentTime = mainVideo.currentTime()
     let current_descriptors = []
     for (const i in current_terms) {
@@ -149,7 +161,7 @@ $("#descript_submit").click(function () {
 })
 
 function attach_delete_listener(input) {
-    $("#" + input + "_delete").click(function() {
+    $("#" + input + "_delete").on("click", function() {
         console.log('delete')
         let item_id = $(this).attr("id").replace('_delete','')
         current_terms.splice(current_terms.indexOf(item_id), 1)
@@ -190,7 +202,7 @@ $("#main_video").on("play", function () {
 })
 
 var mainVideo = videojs('main_video')
-//mainVideo.controlBar.progressControl.disable()
+mainVideo.controlBar.progressControl.disable()
 
 mainVideo.on('ended', function () {
     $("#experiment-body").hide()
@@ -238,7 +250,7 @@ function categorizeDescriptors(category, categoryName) {
     }
 }
 
-$("#sorting_submit").click(function () {
+$("#sorting_submit").on("click", function () {
 
     categorizeDescriptors(emotions, "emotion")
     categorizeDescriptors(traits, "trait")
@@ -252,14 +264,12 @@ $("#sorting_submit").click(function () {
         },
         "video":videos[current_vid]
     }
-    $.ajax({
-        type: "POST",
-        url: "/request_trial",
-        data: submission,
-        success: function() {
-            console.log("Successfully received " + submission.toString())
-        }
-    })
+    try {
+        const docRef = setDoc(doc(db, "studies/study1/participants/" + submission["subj_id"] + "/video_responses", submission["video"]), submission["data"]);
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+    }
     
     console.log(descriptors)
     current_vid++
@@ -273,7 +283,7 @@ $("#sorting_submit").click(function () {
         recentTime = -2
         mainVideo.src({ type: 'video/mp4', src: 'assets/video/' + videos[current_vid] })
         mainVideo = videojs('main_video')
-        //mainVideo.controlBar.progressControl.disable()
+        mainVideo.controlBar.progressControl.disable()
         mainVideo.controlBar.playToggle.enable()
         mainVideo.options({
             userActions: {
