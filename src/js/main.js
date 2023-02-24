@@ -108,6 +108,7 @@ $("#pause_notice").hide()
 $("#too_early_notice").hide()
 $("#cannot_unpause_notice").hide()
 $("#cannot_add_notice").hide()
+$("#final_cannot_add_notice").hide()
 
 var descriptors = []
 var current_terms = []
@@ -119,19 +120,20 @@ var recentTime = -2
 $("#add_descript_form").on( "submit", function(event) {
     event.preventDefault()
     var input = $('#descript_input').val()
+    input = input.replaceAll(' ', '_')
 
     console.log("submitted")
 
-    if (current_terms.includes(input)) {
+    if (current_terms.includes(input.replaceAll('_', ' '))) {
         $("#cannot_add_notice").show()
     }
     else if (input=="") {
         console.log("Error: no input provided")
     }
     else {
-        current_terms.push(input)
+        current_terms.push(input.replaceAll('_',' '))
 
-        $('#desc_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + input + '> ' + input + '<button class="item_delete" type="button" id="' + input + '_delete">✖</button></li></div>')
+        $('#desc_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + input + '> ' + input.replaceAll('_', ' ') + '<button class="item_delete" type="button" id="' + input + '_delete">✖</button></li></div>')
 
         attach_delete_listener(input)
         console.log(current_terms)
@@ -174,14 +176,15 @@ $("#descript_submit").on("click", function () {
 })
 
 function attach_delete_listener(input) {
+    input = input.replaceAll(' ', '_')
     $("#" + input + "_delete").on("click", function() {
         console.log('delete: ' + input)
-        current_terms.splice(current_terms.indexOf(input), 1)
+        current_terms.splice(current_terms.indexOf(input.replaceAll('_', ' ')), 1)
         $("#" + input).remove()
         console.log(current_terms)
         if (current_terms.length == 0) {
             $("#descript_submit").attr('disabled','disabled')
-            $("#final_descript_submit").attr('disabled','disabled')
+            $("#final_submit").attr('disabled','disabled')
         }
     })
 }
@@ -231,7 +234,7 @@ mainVideo.on('ended', function () {
     videoMode = false
 
     for (const descriptor of descriptors) {
-        $('#main_sorter').append('<li class="list-group-item" id=' + descriptor.name + '> ' + descriptor.name + '</li>')
+        $('#main_sorter').append('<li class="list-group-item" id=' + descriptor.name.replaceAll(' ','_') + '> ' + descriptor.name + '</li>')
     }
 
     let main = Sortable.create(main_sorter, {
@@ -288,8 +291,10 @@ mainVideo.on('ended', function () {
 
 function categorizeDescriptors(descriptor_array, category, categoryName) {
     category = category.toArray()
+    console.log(category)
+    console.log(descriptor_array)
     for (const i in descriptor_array) {
-        if (category.includes(descriptor_array[i].name)){
+        if (category.includes(descriptor_array[i].name.replaceAll(' ','_'))){
             descriptor_array[i].category = categoryName
         }
     }
@@ -324,12 +329,15 @@ $("#sorting_submit").on("click", function () {
     current_terms = []
 
     for (const descriptor of descriptors) {
-        $('#final_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + descriptor.name + '> ' + descriptor.name + '<button class="item_delete" type="button" id="' + descriptor.name + '_delete">✖</button></li></div>')
+        $('#final_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + descriptor.name.replaceAll(' ', '_') + '> ' + descriptor.name + '<button class="item_delete" type="button" id="' + descriptor.name.replaceAll(' ','_') + '_delete">✖</button></li></div>')
         current_terms.push(descriptor.name)
         attach_delete_listener(descriptor.name)
     }
 
     console.log(current_terms)
+    if(current_terms.length>0) {
+        $("#final_submit").removeAttr('disabled')
+    }
 
     $("#mental_state_sorter").empty()
     $("#emotion_sorter").empty()
@@ -346,24 +354,26 @@ $("#sorting_submit").on("click", function () {
 $("#final_descript_form").on( "submit", function(event) {
     event.preventDefault()
     let input = $('#final_descript_input').val()
+    input = input.replaceAll(' ', '_')
 
     console.log("submitted")
     
-    if (descriptors.includes(input)) {
-        $("#cannot_add_notice").show()
+    if (current_terms.includes(input.replaceAll('_', ' '))) {
+        $("#final_cannot_add_notice").show()
     }
     else if (input=="") {
         console.log("Error: no input provided")
     }
     else {
-        current_terms.push(input)
+        current_terms.push(input.replaceAll('_',' '))
 
-        $('#final_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + input + '> ' + input + '<button class="item_delete" type="button" id="' + input + '_delete">✖</button></li></div>')
+        $('#final_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + input + '> ' + input.replaceAll('_',' ') + '<button class="item_delete" type="button" id="' + input + '_delete">✖</button></li></div>')
 
         attach_delete_listener(input)
         console.log(current_terms)
 
-        $("#cannot_add_notice").hide()
+        $("#final_submit").removeAttr('disabled')
+        $("#final_cannot_add_notice").hide()
         $('#final_descript_input').val("")
     }
 
@@ -422,8 +432,9 @@ $("#final_submit").on("click", function () {
         $("#cannot_add_notice").hide()
         $('#sorting-body').hide()
         $('#final-impression-body').hide()
+        $("#final_cannot_add_notice").hide()
         $("#experiment-body").show()
-        $("final_sorter").empty()
+        $("#final_sorter").empty()
         $("#mental_state_sorter").empty()
         $("#emotion_sorter").empty()
         $("#trait_sorter").empty()

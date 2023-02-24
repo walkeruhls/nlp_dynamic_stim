@@ -182,7 +182,7 @@
                       and short sentences/phrases</label>
                     <div class="input-group mb-3">
                       <input id="descript_input" type="textarea" class="form-control input-md"
-                      placeholder="example: happy, trustworthy, man, etc." autocomplete="off" required disabled>
+                      placeholder="example: 'happy' or 'trustworthy' or 'man,' etc." autocomplete="off" required disabled>
                       <div class="input-group-append">
                         <button id="descript_add" type="submit" class="btn btn-primary" disabled><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                           <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
@@ -283,7 +283,7 @@
               <p class="display-8"><b>Please add or remove any final descriptors that you feel describe this person. </b></p>
             </div>
           </div>
-          <button id="final_submit" class="btn btn-primary my-1">Submit Final Impression</button>
+          <button id="final_submit" class="btn btn-primary my-1" disabled>Submit Final Impression</button>
         </div>
         <div class="row" id="final_sorting_columns">
           <div class="col justify-content-center">
@@ -304,13 +304,18 @@
 
               </tbody>
             </table>
+            <div class="row" id="final_cannot_add_notice" style="color:red;">
+              <div class="col d-flex justify-content-center mx-auto">
+                <h6>You cannot add an item already in the list.</h6>
+              </div>
+            </div>
             <form class="form-horizontal col-3 mx-auto text-center" id="final_descript_form">
               <div id="final_description" class="form-group">
                 <label id="final-user-id-text" class="control-label" for="user-id">Please ONLY use adjectives
                   and short sentences/phrases</label>
                 <div class="input-group mb-3">
                   <input id="final_descript_input" type="textarea" class="form-control input-md"
-                  placeholder="example: happy, trustworthy, man, etc." autocomplete="off" required>
+                  placeholder="example: 'happy' or 'trustworthy' or 'man,' etc." autocomplete="off" required>
                   <div class="input-group-append">
                     <button id="final_descript_add" type="submit" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
