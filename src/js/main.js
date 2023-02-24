@@ -1,18 +1,21 @@
+//Import needed functions from firebase
 import { initializeApp } from 'firebase/app'
 import { getFirestore, doc, setDoc, updateDoc  } from "firebase/firestore"
 import { getAuth, signInAnonymously } from "firebase/auth"
 
+//Import jquery, bootstrap, etc.
 import * as $ from 'jquery'
 import videojs from 'video.js'
 import Sortable from 'sortablejs'
 import * as bootstrap from 'bootstrap'
 
+//Import stylesheets
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'video.js/dist/video-js.css'
 import '../css/style.css'
 
 
-
+//Firebase config to connect to online database
 const firebaseConfig = {
 
   apiKey: "AIzaSyBAnN60-yIbaJjKoQg1nDFebm2fGgGncgA",
@@ -31,11 +34,14 @@ const firebaseConfig = {
 
 }
 
+//Initialize firebase functions
 const app = initializeApp(firebaseConfig)
 
 const auth = getAuth(app)
 const db = getFirestore(app)
 
+
+//Sign in anonymously to firebase
 signInAnonymously(auth)
   .then(() => {
     // Signed in..
@@ -46,6 +52,8 @@ signInAnonymously(auth)
     // ...
   })
 
+
+//Hide all elements that will be shown later
 $("#reject").hide()
 $("#instructions1").hide()
 $("#instructions2").hide()
@@ -61,11 +69,9 @@ $("#final_cannot_add_notice").hide()
 
 
 var subj_id = null
-
-function importAll(r) {
-    return r.keys().map(r);
-  }
   
+
+//Video list, currently must be manually updated
 const videos = ["sample_audition_tape.mp4","usc_comedic_monologue.mp4","yale_school_drama.mp4"]
 
 var current_vid = 0
@@ -73,16 +79,20 @@ var current_vid = 0
 $("#video_source").attr('src', "video/" + videos[current_vid])
 console.log($("#video_source").attr("src"))
 
+//Declare videojs object with current video as source
 var mainVideo = videojs('main_video')
 mainVideo.src({ type: 'video/mp4', src: "video/" + videos[current_vid] })
 mainVideo.pause()
 var videoMode = false
 var recentTime = -2
 
+//Declare lists of words, etc.
 var descriptors = []
 var current_terms = []
 var emotions = null, traits = null, mental_states = null, identity = null, final = null
 
+
+//Function to attach an event listener to the delete button on each word when it is submitted.
 function attach_delete_listener(input) {
     input = input.replaceAll(' ', '_')
     $("#" + input + "_delete").on("click", function() {
@@ -97,6 +107,8 @@ function attach_delete_listener(input) {
     })
 }
 
+
+//Categorize each word based on the sorted lists that the subject makes on the sorting page.
 function categorizeDescriptors(descriptor_array, category, categoryName) {
     category = category.toArray()
     console.log(category)
@@ -109,6 +121,7 @@ function categorizeDescriptors(descriptor_array, category, categoryName) {
     return descriptor_array
 }
 
+//Submit participant form, reject them if they cannot speak English
 $("#info-form").on("submit", function(event) {
     event.preventDefault()
     if ($("#english_check_input").val() == "No") {
@@ -123,6 +136,7 @@ $("#info-form").on("submit", function(event) {
         $("#screener").hide()
         $("#instructions1").show()
         $("#welcome").hide()
+        //Submit subj_id to firebase
         try {
             setDoc(doc(db, "studies/trial_study_1/participants", subj_id.subj_id), {
               "subj_id":subj_id["subj_id"]
@@ -134,11 +148,14 @@ $("#info-form").on("submit", function(event) {
     }
 })
 
+//Show next instructions
 $("#next_instruct").on("click", function () {
     $("#instructions1").hide()
     $("#instructions2").show()
 })
 
+
+//Begin task, load video and set options for interaction
 $("#start_task").on("click", function () {
 
     $("#instructions2").hide()
@@ -158,6 +175,7 @@ $("#start_task").on("click", function () {
     
 })
 
+//Add word to word list
 $("#add_descript_form").on( "submit", function(event) {
     event.preventDefault()
     var input = $('#descript_input').val()
@@ -165,6 +183,7 @@ $("#add_descript_form").on( "submit", function(event) {
 
     console.log("submitted")
 
+    //Validate input and reject if duplicate or if no input provided
     if (current_terms.includes(input.replaceAll('_', ' '))) {
         $("#cannot_add_notice").show()
     }
@@ -185,8 +204,11 @@ $("#add_descript_form").on( "submit", function(event) {
 
 })
 
+//Submit list of words
 $("#descript_submit").on("click", function () {
     recentTime = mainVideo.currentTime()
+
+    //Define current list of descriptors, push to overall descriptor array
     let current_descriptors = []
     for (const i in current_terms) {
         let descriptor = {
@@ -204,6 +226,7 @@ $("#descript_submit").on("click", function () {
     current_terms = []
     current_descriptors = []
 
+    //Re-enable manual pausing, etc.
     mainVideo.controlBar.playToggle.enable()
     mainVideo.options({
         userActions: {
@@ -218,7 +241,8 @@ $("#descript_submit").on("click", function () {
 
 
 
-
+//Pause video event, prevent if done too quickly
+//Otherwise, block resuming until they submit list
 mainVideo.on("pause", function () {
     if (mainVideo.currentTime() - recentTime <= 2) {
         mainVideo.play()
@@ -239,23 +263,31 @@ mainVideo.on("pause", function () {
     }
 })
 
+//Disable word submitting functions while video is playing
 mainVideo.on("play", function () {
     $("#descript_submit").attr('disabled', 'disabled')
     $("#descript_add").attr('disabled', 'disabled')
     $("#descript_input").attr('disabled', 'disabled')
     $("#pause_notice").show()
+
+    //Sometimes video somehow keeps playing when not on the video screen, so this pauses it if that's the case. 
     if (!videoMode) {
         mainVideo.pause()
     }
 })
 
+//Video ending function
 mainVideo.on('ended', function () {
     $("#experiment-body").hide()
+
+    //Skip sorting page if participant submitted zero words
     if (Object.keys(descriptors).length == 0) {
         current_terms = []
         $("#final_submit").attr('disabled','disabled')
         $('#final-impression-body').show()
     }
+
+    //Otherwise, show sorting screen
     else {
         $('#sorting-body').show()
         $("#sorting_submit").attr('disabled','disabled')
@@ -273,6 +305,7 @@ mainVideo.on('ended', function () {
             $('#main_sorter').append('<li class="list-group-item" id=' + descriptor.replaceAll(' ','_') + '> ' + descriptor + '</li>')
         }
 
+        //Initialize SortableJS sortables
         let main = Sortable.create(main_sorter, {
             animation: 100,
             group: 'shared',
@@ -326,17 +359,20 @@ mainVideo.on('ended', function () {
     }
 })
 
+//Submit sorting page
 $("#sorting_submit").on("click", function () {
     $("#sorting-body").hide()
     $('#final-impression-body').show()
 
     let categorized_descriptors = descriptors
 
+    //Categorize words for each category
     categorized_descriptors = categorizeDescriptors(categorized_descriptors, emotions, "emotion")
     categorized_descriptors = categorizeDescriptors(categorized_descriptors, traits, "trait")
     categorized_descriptors = categorizeDescriptors(categorized_descriptors, mental_states, "mental_state")
     categorized_descriptors = categorizeDescriptors(categorized_descriptors, identity, "identity")
 
+    //Prepare firebase submission
     let submission = {
         ...subj_id,
         data:{
@@ -344,6 +380,8 @@ $("#sorting_submit").on("click", function () {
         },
         video:videos[current_vid]
     }
+
+    //Submit to firebase
     try {
         const docRef = setDoc(doc(db, "studies/trial_study_1/participants/" + submission.subj_id + "/video_responses", submission.video), submission.data)
         console.log("Document written with ID: ", docRef.id)
@@ -351,6 +389,7 @@ $("#sorting_submit").on("click", function () {
         console.error("Error adding document: ", e)
     }
 
+    //Prepare final impression page
     current_terms = []
     let current_descriptors = []
 
@@ -382,6 +421,7 @@ $("#sorting_submit").on("click", function () {
     // })
 })
 
+//Event when new words are added on final impressions page
 $("#final_descript_form").on( "submit", function(event) {
     event.preventDefault()
     let input = $('#final_descript_input').val()
@@ -410,7 +450,7 @@ $("#final_descript_form").on( "submit", function(event) {
 
 })
 
-
+//Final impressions submit
 $("#final_submit").on("click", function () {
     descriptors = []
     let current_descriptors = []
@@ -422,6 +462,7 @@ $("#final_submit").on("click", function () {
     }
     descriptors.push.apply(descriptors, current_descriptors)
 
+    //Prepare firebase submission
     let submission = {
         ...subj_id,
         data:{
@@ -429,6 +470,7 @@ $("#final_submit").on("click", function () {
         },
         video:videos[current_vid]
     }
+    //Submit to firebase
     try {
         const docRef = updateDoc(doc(db, "studies/trial_study_1/participants/" + submission.subj_id + "/video_responses", submission.video), submission.data)
         console.log("Document written with ID: ", docRef.id)
@@ -438,7 +480,7 @@ $("#final_submit").on("click", function () {
 
     current_vid++
 
-
+    //Load next video if there are more
     if (current_vid < videos.length) {
 
         descriptors = []
@@ -474,6 +516,7 @@ $("#final_submit").on("click", function () {
         mainVideo.play()
     }
     
+    //Otherwise, load study finished page
     else {
         $("#instructions2").hide()
         $("#video-section").hide()
@@ -483,6 +526,8 @@ $("#final_submit").on("click", function () {
     }
 })
 
+
+//Hide window until all JS is finished loading
 $(window).on('load', function() {
     $("#cover").hide();
  });
