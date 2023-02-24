@@ -53,6 +53,11 @@ $("#video-section").hide()
 $("#sorting-body").hide()
 $("#final-impression-body").hide()
 $("#finished").hide()
+$("#pause_notice").hide()
+$("#too_early_notice").hide()
+$("#cannot_unpause_notice").hide()
+$("#cannot_add_notice").hide()
+$("#final_cannot_add_notice").hide()
 
 
 var subj_id = null
@@ -64,10 +69,48 @@ function importAll(r) {
 const videos = ["sample_audition_tape.mp4","usc_comedic_monologue.mp4","yale_school_drama.mp4"]
 
 var current_vid = 0
+
 $("#video_source").attr('src', "video/" + videos[current_vid])
 console.log($("#video_source").attr("src"))
 
-$("#screen_submit").on("click", function() {
+var mainVideo = videojs('main_video')
+mainVideo.src({ type: 'video/mp4', src: "video/" + videos[current_vid] })
+mainVideo.pause()
+var videoMode = false
+var recentTime = -2
+
+var descriptors = []
+var current_terms = []
+var emotions = null, traits = null, mental_states = null, identity = null, final = null
+
+function attach_delete_listener(input) {
+    input = input.replaceAll(' ', '_')
+    $("#" + input + "_delete").on("click", function() {
+        console.log('delete: ' + input)
+        current_terms.splice(current_terms.indexOf(input.replaceAll('_', ' ')), 1)
+        $("#" + input).remove()
+        console.log(current_terms)
+        if (current_terms.length == 0) {
+            $("#descript_submit").attr('disabled','disabled')
+            $("#final_submit").attr('disabled','disabled')
+        }
+    })
+}
+
+function categorizeDescriptors(descriptor_array, category, categoryName) {
+    category = category.toArray()
+    console.log(category)
+    console.log(descriptor_array)
+    for (const i in descriptor_array) {
+        if (category.includes(descriptor_array[i].name.replaceAll(' ','_'))){
+            descriptor_array[i].category = categoryName
+        }
+    }
+    return descriptor_array
+}
+
+$("#info-form").on("submit", function(event) {
+    event.preventDefault()
     if ($("#english_check_input").val() == "No") {
         $("#reject").show()
         $("#screener").hide()
@@ -81,7 +124,7 @@ $("#screen_submit").on("click", function() {
         $("#instructions1").show()
         $("#welcome").hide()
         try {
-            setDoc(doc(db, "studies/study1/participants", subj_id.subj_id), {
+            setDoc(doc(db, "studies/trial_study_1/participants", subj_id.subj_id), {
               "subj_id":subj_id["subj_id"]
             })
             console.log("Document written with ID: " + subj_id.subj_id)
@@ -97,25 +140,23 @@ $("#next_instruct").on("click", function () {
 })
 
 $("#start_task").on("click", function () {
-    var url = new URL(window.location.href)
-    url.searchParams.append('id', subj_id)
+
     $("#instructions2").hide()
     $("#video-section").show()
-    $("#video_source").attr('src', "video/" + videos[current_vid])
+
+    mainVideo.src({ type: 'video/mp4', src: "video/" + videos[current_vid] })
+    mainVideo.controlBar.progressControl.disable()
+    mainVideo.controlBar.playToggle.enable()
+    mainVideo.options({
+        userActions: {
+            click: true
+        }
+    })
+
+    videoMode = true
+    mainVideo.play()
+    
 })
-
-$("#pause_notice").hide()
-$("#too_early_notice").hide()
-$("#cannot_unpause_notice").hide()
-$("#cannot_add_notice").hide()
-$("#final_cannot_add_notice").hide()
-
-var descriptors = []
-var current_terms = []
-
-var emotions = null, traits = null, mental_states = null, identity = null, final = null
-
-var recentTime = -2
 
 $("#add_descript_form").on( "submit", function(event) {
     event.preventDefault()
@@ -129,7 +170,7 @@ $("#add_descript_form").on( "submit", function(event) {
     }
     else if (input=="") {
         console.log("Error: no input provided")
-    }
+    } 
     else {
         current_terms.push(input.replaceAll('_',' '))
 
@@ -175,22 +216,10 @@ $("#descript_submit").on("click", function () {
     mainVideo.play()
 })
 
-function attach_delete_listener(input) {
-    input = input.replaceAll(' ', '_')
-    $("#" + input + "_delete").on("click", function() {
-        console.log('delete: ' + input)
-        current_terms.splice(current_terms.indexOf(input.replaceAll('_', ' ')), 1)
-        $("#" + input).remove()
-        console.log(current_terms)
-        if (current_terms.length == 0) {
-            $("#descript_submit").attr('disabled','disabled')
-            $("#final_submit").attr('disabled','disabled')
-        }
-    })
-}
 
 
-$("#main_video").on("pause", function () {
+
+mainVideo.on("pause", function () {
     if (mainVideo.currentTime() - recentTime <= 2) {
         mainVideo.play()
         $("#too_early_notice").show()
@@ -210,7 +239,7 @@ $("#main_video").on("pause", function () {
     }
 })
 
-$("#main_video").on("play", function () {
+mainVideo.on("play", function () {
     $("#descript_submit").attr('disabled', 'disabled')
     $("#descript_add").attr('disabled', 'disabled')
     $("#descript_input").attr('disabled', 'disabled')
@@ -220,86 +249,82 @@ $("#main_video").on("play", function () {
     }
 })
 
-var mainVideo = videojs('main_video')
-mainVideo.src({ type: 'video/mp4', src: "video/" + videos[current_vid] })
-//mainVideo.controlBar.progressControl.disable()
-var videoMode = true
-
 mainVideo.on('ended', function () {
     $("#experiment-body").hide()
-    $('#sorting-body').show()
-    $("#sorting_submit").attr('disabled','disabled')
-
-    mainVideo.pause()
-    videoMode = false
-
-    for (const descriptor of descriptors) {
-        $('#main_sorter').append('<li class="list-group-item" id=' + descriptor.name.replaceAll(' ','_') + '> ' + descriptor.name + '</li>')
+    if (Object.keys(descriptors).length == 0) {
+        current_terms = []
+        $("#final_submit").attr('disabled','disabled')
+        $('#final-impression-body').show()
     }
+    else {
+        $('#sorting-body').show()
+        $("#sorting_submit").attr('disabled','disabled')
 
-    let main = Sortable.create(main_sorter, {
-        animation: 100,
-        group: 'shared',
-        draggable: '.list-group-item',
-        dataIdAttr: 'id',
-        onEnd: function(evt) {
-            console.log("Moved")
-            console.log(this.toArray())
-            if (this.toArray().length==0) {
-                console.log("Allow submit")
-                $("#sorting_submit").removeAttr('disabled')
+        mainVideo.pause()
+        videoMode = false
+        let current_descriptors = []
+
+        for (const descriptor of descriptors) {
+            if (!(current_descriptors.includes(descriptor.name))) {
+                current_descriptors.push(descriptor.name)
             }
-            else {
+        }
+        for (const descriptor of current_descriptors) {
+            $('#main_sorter').append('<li class="list-group-item" id=' + descriptor.replaceAll(' ','_') + '> ' + descriptor + '</li>')
+        }
+
+        let main = Sortable.create(main_sorter, {
+            animation: 100,
+            group: 'shared',
+            draggable: '.list-group-item',
+            dataIdAttr: 'id',
+            onEnd: function(evt) {
+                console.log("Moved")
+                console.log(this.toArray())
+                if (this.toArray().length==0) {
+                    console.log("Allow submit")
+                    $("#sorting_submit").removeAttr('disabled')
+                }
+                else {
+                    console.log("Forbid submit")
+                    $("#sorting_submit").attr('disabled','disabled')
+                }
+            },
+            onAdd: function (evt) {
                 console.log("Forbid submit")
-                $("#sorting_submit").attr('disabled','disabled')
+                    $("#sorting_submit").attr('disabled','disabled')
             }
-        },
-        onAdd: function (evt) {
-            console.log("Forbid submit")
-                $("#sorting_submit").attr('disabled','disabled')
-        }
-    })
+        })
 
-    emotions = Sortable.create(emotion_sorter, {
-        animation: 100,
-        group: 'shared',
-        draggable: '.list-group-item',
-        dataIdAttr: 'id'
-    })
+        emotions = Sortable.create(emotion_sorter, {
+            animation: 100,
+            group: 'shared',
+            draggable: '.list-group-item',
+            dataIdAttr: 'id'
+        })
 
-    traits = Sortable.create(trait_sorter, {
-        animation: 100,
-        group: 'shared',
-        draggable: '.list-group-item',
-        dataIdAttr: 'id'
-    })
+        traits = Sortable.create(trait_sorter, {
+            animation: 100,
+            group: 'shared',
+            draggable: '.list-group-item',
+            dataIdAttr: 'id'
+        })
 
-    mental_states = Sortable.create(mental_state_sorter, {
-        animation: 100,
-        group: 'shared',
-        draggable: '.list-group-item',
-        dataIdAttr: 'id'
-    })
+        mental_states = Sortable.create(mental_state_sorter, {
+            animation: 100,
+            group: 'shared',
+            draggable: '.list-group-item',
+            dataIdAttr: 'id'
+        })
 
-    identity = Sortable.create(identity_sorter, {
-        animation: 100,
-        group: 'shared',
-        draggable: '.list-group-item',
-        dataIdAttr: 'id'
-    })
-})
-
-function categorizeDescriptors(descriptor_array, category, categoryName) {
-    category = category.toArray()
-    console.log(category)
-    console.log(descriptor_array)
-    for (const i in descriptor_array) {
-        if (category.includes(descriptor_array[i].name.replaceAll(' ','_'))){
-            descriptor_array[i].category = categoryName
-        }
+        identity = Sortable.create(identity_sorter, {
+            animation: 100,
+            group: 'shared',
+            draggable: '.list-group-item',
+            dataIdAttr: 'id'
+        })
     }
-    return descriptor_array
-}
+})
 
 $("#sorting_submit").on("click", function () {
     $("#sorting-body").hide()
@@ -320,18 +345,24 @@ $("#sorting_submit").on("click", function () {
         video:videos[current_vid]
     }
     try {
-        const docRef = setDoc(doc(db, "studies/study1/participants/" + submission.subj_id + "/video_responses", submission.video), submission.data)
+        const docRef = setDoc(doc(db, "studies/trial_study_1/participants/" + submission.subj_id + "/video_responses", submission.video), submission.data)
         console.log("Document written with ID: ", docRef.id)
       } catch (e) {
         console.error("Error adding document: ", e)
     }
 
     current_terms = []
+    let current_descriptors = []
 
     for (const descriptor of descriptors) {
-        $('#final_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + descriptor.name.replaceAll(' ', '_') + '> ' + descriptor.name + '<button class="item_delete" type="button" id="' + descriptor.name.replaceAll(' ','_') + '_delete">✖</button></li></div>')
-        current_terms.push(descriptor.name)
-        attach_delete_listener(descriptor.name)
+        if (!(current_descriptors.includes(descriptor.name))) {
+            current_descriptors.push(descriptor.name)
+        }
+    }
+    for (const descriptor of current_descriptors) {
+        $('#final_sorter').append('<div class="justify-content-center"><li class="list-group-item" id=' + descriptor.replaceAll(' ', '_') + '> ' + descriptor + '<button class="item_delete" type="button" id="' + descriptor.replaceAll(' ','_') + '_delete">✖</button></li></div>')
+        current_terms.push(descriptor)
+        attach_delete_listener(descriptor)
     }
 
     console.log(current_terms)
@@ -399,7 +430,7 @@ $("#final_submit").on("click", function () {
         video:videos[current_vid]
     }
     try {
-        const docRef = updateDoc(doc(db, "studies/study1/participants/" + submission.subj_id + "/video_responses", submission.video), submission.data)
+        const docRef = updateDoc(doc(db, "studies/trial_study_1/participants/" + submission.subj_id + "/video_responses", submission.video), submission.data)
         console.log("Document written with ID: ", docRef.id)
       } catch (e) {
         console.error("Error adding document: ", e)
@@ -417,7 +448,7 @@ $("#final_submit").on("click", function () {
         recentTime = -2
         mainVideo.src({ type: 'video/mp4', src: 'video/' + videos[current_vid] })
         mainVideo = videojs('main_video')
-        //mainVideo.controlBar.progressControl.disable()
+        mainVideo.controlBar.progressControl.disable()
         mainVideo.controlBar.playToggle.enable()
         mainVideo.options({
             userActions: {
@@ -439,6 +470,8 @@ $("#final_submit").on("click", function () {
         $("#emotion_sorter").empty()
         $("#trait_sorter").empty()
         $("#identity_sorter").empty()
+
+        mainVideo.play()
     }
     
     else {
@@ -449,3 +482,7 @@ $("#final_submit").on("click", function () {
         $("#finished").show()
     }
 })
+
+$(window).on('load', function() {
+    $("#cover").hide();
+ });
