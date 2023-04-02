@@ -1,8 +1,12 @@
 textarea {
-    height: auto
-  }
+  height: auto;
+}
 
-  button {
-    border: none;
-    background: none;
-  }
+button {
+  border: none;
+  background: none;
+}
+
+.sortable-list {
+  min-height: 200px;
+}
