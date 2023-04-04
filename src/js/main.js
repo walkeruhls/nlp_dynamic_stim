@@ -88,7 +88,7 @@ mainVideo.pause();
 var videoMode = false;
 var skippedCategories = false;
 var recentTime = -2;
-var instruction = 1;
+var instructVideo = null;
 
 //Declare lists of words, etc.
 var descriptors = [];
@@ -157,23 +157,30 @@ $("#info-form").on("submit", function (event) {
 $("#next-instruct-landing").on("click", function () {
   $("#instructions-landing").hide();
   $("#instructions1").show();
-  $("#submitting-vid").attr("autoplay", "autoplay");
+  instructVideo = videojs("submitting-vid");
+  instructVideo.play();
 });
 
 $("#next-instruct").on("click", function () {
+  instructVideo.dispose();
   $("#instructions1").hide();
   $("#instructions2").show();
-  $("#sorting-vid").attr("autoplay", "autoplay");
+  instructVideo = videojs("sorting-vid");
+  instructVideo.play();
 });
 
 $("#next-instruct2").on("click", function () {
+  instructVideo.dispose();
   $("#instructions2").hide();
   $("#instructions3").show();
   $("#final-vid").attr("autoplay", "autoplay");
+  instructVideo = videojs("final-vid");
+  instructVideo.play();
 });
 
 //Begin task, load video and set options for interaction
 $("#start-task").on("click", function () {
+  instructVideo.dispose();
   $("#instructions3").hide();
   $(".instruct-videos").remove();
   $("#video-section").show();
