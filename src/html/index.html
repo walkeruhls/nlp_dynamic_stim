@@ -124,7 +124,10 @@
             Step 1: Enter words describing the person in the video.
           </h1>
 
-          <!-- gif goes here -->
+          <video class="instruct-videos" id="submitting-vid" width="960" height="460" muted loop>
+            <source src="video/instruct/submitting.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
           <p>
             Pause the video whenever you want to enter words describing the person in the video.
           </p>
@@ -144,9 +147,11 @@
             </p>
           </div>
 
-          <button id="next-instruct" type="submit" class="mx-auto text-center btn btn-primary">
-            Next
-          </button>
+          <p>
+            <button id="next-instruct" type="submit" class="mx-auto text-center btn btn-primary">
+              Next
+            </button>
+          </p>
         </div>
       </div>
     </div>
@@ -165,7 +170,10 @@
             Step 2: Sort the words that you entered.
           </h1>
 
-          <!-- gif goes here -->
+          <video class="instruct-videos" id="sorting-vid" width="960" height="460" muted loop>
+            <source src="video/instruct/sorting.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
           <p>
             Once you finish watching the video, drag and drop the words that you entered into categories (described
             below). Don't overthink how you sort the words, go with your gut. And if one doesn't feel like it fits, you
@@ -253,7 +261,10 @@
             Step 3: Form a final impression.
           </h1>
 
-          <!-- gif goes here -->
+          <video class="instruct-videos" id="final-vid" width="960" height="460" muted loop>
+            <source src="video/instruct/final.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
           <p>
             After sorting all of the words you entered while watching the video, please add or delete any words to form
             your final impression. Think of this as a list of words you'd use to describe this person to someone else, a
@@ -261,6 +272,12 @@
           </p>
 
           <p>Press the button below to get started when you are ready.</p>
+
+          <div class="alert alert-info text-center">
+            <h3>
+              Please make sure your sound is on before continuing.
+            </h3>
+          </div>
           <p>
             <button id="start-task" type="submit" class="mx-auto text-center btn btn-success btn-lg btn-block">
               Let's get started!

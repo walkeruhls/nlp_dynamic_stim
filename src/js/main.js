@@ -157,21 +157,25 @@ $("#info-form").on("submit", function (event) {
 $("#next-instruct-landing").on("click", function () {
   $("#instructions-landing").hide();
   $("#instructions1").show();
+  $("#submitting-vid").attr("autoplay", "autoplay");
 });
 
 $("#next-instruct").on("click", function () {
   $("#instructions1").hide();
   $("#instructions2").show();
+  $("#sorting-vid").attr("autoplay", "autoplay");
 });
 
 $("#next-instruct2").on("click", function () {
   $("#instructions2").hide();
   $("#instructions3").show();
+  $("#final-vid").attr("autoplay", "autoplay");
 });
 
 //Begin task, load video and set options for interaction
 $("#start-task").on("click", function () {
   $("#instructions3").hide();
+  $(".instruct-videos").remove();
   $("#video-section").show();
 
   mainVideo.src({ type: "video/mp4", src: "video/" + videos[current_vid] });
