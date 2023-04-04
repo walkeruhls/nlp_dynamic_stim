@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 //Import needed functions from firebase
 import { initializeApp } from "firebase/app";
@@ -52,8 +51,10 @@ signInAnonymously(auth)
 
 //Hide all elements that will be shown later
 $("#reject").hide();
+$("#instructions-landing").hide();
 $("#instructions1").hide();
 $("#instructions2").hide();
+$("#instructions3").hide();
 $("#video-section").hide();
 $("#sorting-body").hide();
 $("#final-impression-body").hide();
@@ -85,7 +86,9 @@ var mainVideo = videojs("main-video");
 mainVideo.src({ type: "video/mp4", src: "video/" + videos[current_vid] });
 mainVideo.pause();
 var videoMode = false;
+var skippedCategories = false;
 var recentTime = -2;
+var instruction = 1;
 
 //Declare lists of words, etc.
 var descriptors = [];
@@ -94,6 +97,7 @@ var emotions = null,
   traits = null,
   mental_states = null,
   identity = null,
+  other = null,
   final = null;
 
 //Function to attach an event listener to the delete button on each word when it is submitted.
@@ -135,7 +139,7 @@ $("#info-form").on("submit", function (event) {
       subj_id: $("#prolific-id").val(),
     };
     $("#screener").hide();
-    $("#instructions1").show();
+    $("#instructions-landing").show();
     $("#welcome").hide();
     //Submit subj_id to firebase
     try {
@@ -150,14 +154,24 @@ $("#info-form").on("submit", function (event) {
 });
 
 //Show next instructions
+$("#next-instruct-landing").on("click", function () {
+  $("#instructions-landing").hide();
+  $("#instructions1").show();
+});
+
 $("#next-instruct").on("click", function () {
   $("#instructions1").hide();
   $("#instructions2").show();
 });
 
+$("#next-instruct2").on("click", function () {
+  $("#instructions2").hide();
+  $("#instructions3").show();
+});
+
 //Begin task, load video and set options for interaction
 $("#start-task").on("click", function () {
-  $("#instructions2").hide();
+  $("#instructions3").hide();
   $("#video-section").show();
 
   mainVideo.src({ type: "video/mp4", src: "video/" + videos[current_vid] });
@@ -283,6 +297,7 @@ mainVideo.on("ended", function () {
   //Skip sorting page if participant submitted zero words
   if (Object.keys(descriptors).length == 0) {
     current_terms = [];
+    skippedCategories = true;
     $("#final-submit").attr("disabled", "disabled");
     $("#final-impression-body").show();
   }
@@ -312,7 +327,7 @@ mainVideo.on("ended", function () {
     }
 
     //Initialize SortableJS sortables
-    let main = Sortable.create(main_sorter, {
+    let main = Sortable.create($("#main-sorter")[0], {
       animation: 100,
       group: "shared",
       draggable: ".list-group-item",
@@ -334,28 +349,35 @@ mainVideo.on("ended", function () {
       },
     });
 
-    emotions = Sortable.create(emotion_sorter, {
+    emotions = Sortable.create($("#emotion-sorter")[0], {
       animation: 100,
       group: "shared",
       draggable: ".list-group-item",
       dataIdAttr: "id",
     });
 
-    traits = Sortable.create(trait_sorter, {
+    traits = Sortable.create($("#trait-sorter")[0], {
       animation: 100,
       group: "shared",
       draggable: ".list-group-item",
       dataIdAttr: "id",
     });
 
-    mental_states = Sortable.create(mental_state_sorter, {
+    mental_states = Sortable.create($("#mental-state-sorter")[0], {
       animation: 100,
       group: "shared",
       draggable: ".list-group-item",
       dataIdAttr: "id",
     });
 
-    identity = Sortable.create(identity_sorter, {
+    identity = Sortable.create($("#identity-sorter")[0], {
+      animation: 100,
+      group: "shared",
+      draggable: ".list-group-item",
+      dataIdAttr: "id",
+    });
+
+    other = Sortable.create($("#other-sorter")[0], {
       animation: 100,
       group: "shared",
       draggable: ".list-group-item",
@@ -391,6 +413,11 @@ $("#sorting-submit").on("click", function () {
     categorized_descriptors,
     identity,
     "identity"
+  );
+  categorized_descriptors = categorizeDescriptors(
+    categorized_descriptors,
+    other,
+    "other"
   );
 
   //Prepare firebase submission
@@ -451,6 +478,7 @@ $("#sorting-submit").on("click", function () {
   $("#emotion-sorter").empty();
   $("#trait-sorter").empty();
   $("#identity-sorter").empty();
+  $("#other-sorter").empty();
 
   // final = Sortable.create(final_sorter, {
   //     animation: 100,
@@ -513,30 +541,48 @@ $("#final-submit").on("click", function () {
     },
     video: videos[current_vid],
   };
-  //Submit to firebase
-  try {
-    const docRef = updateDoc(
-      doc(
-        db,
-        "studies/trial_study_1/participants/" +
-          submission.subj_id +
-          "/video_responses",
-        submission.video
-      ),
-      submission.data
-    );
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
+  //Submit to firebase. Create new document if sorting section was skipped, otherwise update existing document
+  if (skippedCategories) {
+    try {
+      const docRef = setDoc(
+        doc(
+          db,
+          "studies/trial_study_1/participants/" +
+            submission.subj_id +
+            "/video_responses",
+          submission.video
+        ),
+        submission.data
+      );
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  } else {
+    try {
+      const docRef = updateDoc(
+        doc(
+          db,
+          "studies/trial_study_1/participants/" +
+            submission.subj_id +
+            "/video_responses",
+          submission.video
+        ),
+        submission.data
+      );
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
-
+  skippedCategories = false;
   current_vid++;
 
   //Load next video if there are more
   if (current_vid < videos.length) {
     descriptors = [];
     current_terms = [];
-    emotions = traits = mental_states = identity = final = null;
+    emotions = traits = mental_states = identity = other = final = null;
 
     recentTime = -2;
     mainVideo.src({ type: "video/mp4", src: "video/" + videos[current_vid] });
@@ -563,6 +609,7 @@ $("#final-submit").on("click", function () {
     $("#emotion-sorter").empty();
     $("#trait-sorter").empty();
     $("#identity-sorter").empty();
+    $("#other-sorter").empty();
 
     mainVideo.play();
   }
@@ -592,12 +639,60 @@ $("#demographics-form").on("submit", function (event) {
   event.preventDefault();
   $("#demographics").hide();
   $("#feedback").show();
+  let datastring = $("#demographics-form").serializeArray();
+  let demoData = {
+    demographics: {
+      age: [],
+      gender: [],
+      race: [],
+      sexOrientation: [],
+      education: [],
+    },
+  };
+
+  console.log(JSON.stringify(datastring));
+  for (let i of datastring) {
+    demoData.demographics[i["name"]].push(i["value"]);
+  }
+  console.log(JSON.stringify(demoData));
+  try {
+    const docRef = updateDoc(
+      doc(db, "studies/trial_study_1/participants/" + subj_id.subj_id),
+      demoData
+    );
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
 });
 
 $("#feedback-form").on("submit", function (event) {
   event.preventDefault();
   $("#feedback").hide();
   $("#finished").show();
+  let datastring = $("#feedback-form").serializeArray();
+  let feedbackData = {
+    feedback: "",
+  };
+  feedbackData.feedback = datastring[0].value;
+  try {
+    const docRef = updateDoc(
+      doc(db, "studies/trial_study_1/participants/" + subj_id.subj_id),
+      feedbackData
+    );
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+});
+
+$(function () {
+  var tooltipTriggerList = [].slice.call(
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  );
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
 });
 
 //Hide window until all JS is finished loading

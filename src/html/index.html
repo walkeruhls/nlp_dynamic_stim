@@ -46,7 +46,7 @@
             </div>
           </div>
 
-          <button id="screen-submit" type="submit" class="btn btn-primary">
+          <button id="screen-submit" type="submit" class="btn btn-primary mx-auto">
             Submit
           </button>
         </form>
@@ -62,56 +62,87 @@
       </div>
     </div>
 
-    <div id="instructions1" class="row mx-auto text-center">
-      <div class="col-8 justify-content-center mx-auto">
+    <div id="instructions-landing" class="row mx-auto text-center">
+      <div class="col-7 justify-content-center mx-auto">
         <div>
-          <div id="instruction-title" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+          <div class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
             <h1 class="display-4">Instructions</h1>
             <p class="lead" style="color: red">
               Please read the following carefully
             </p>
           </div>
-          <div class="alert alert-info text-center">
-            <h1>Summary</h1>
-            <p>
-              In this experiment, you will be asked to form impressions while
-              watching a video of a person.
-            </p>
-            <p>
-              You will watch a few videos. Each video will contain different
-              people doing different things.
-            </p>
-            <p>
-              Your job is to write down any impressions you form about the
-              people in the video.
+
+          <h1>
+            Welcome to the experiment!
+          </h1>
+          <p>
+            Thank you for participating in our experiment!
+          </p>
+          <p>
+            We are researchers interested in how we understand other people.
+          </p>
+          <p>
+            Your job today is simple. <b>There are three parts to our task.</b>
+          </p>
+
+          <p>
+          <ul class="list-group">
+            <li class="list-group-item">1. You will watch videos and write down anything that comes to mind about the
+              person in the video. Truly anything about the person is a suitable answer.</li>
+            <li class="list-group-item">2. After watching the video, you will sort your impressions into categories
+              (more
+              on that soon).</li>
+            <li class="list-group-item">3. After sorting, you will create a final impression of the person in the video,
+              deleting any words that you entered while watching the video and adding any others that you feel like to
+              summarize who the person is.</li>
+          </ul>
+          </p>
+          <p>You will repeat these three steps for each video.</p>
+          <p>The videos will be of people in a variety of situations, some of them real life situations and others make
+            up situations with actors. In either case, we ask that you form impressions about the person as if the
+            situation was real</p>
+          <p>In the next 3 pages, you will learn more about the 3 steps of the experiment.</p>
+
+          <button id="next-instruct-landing" type="submit" class="mx-auto text-center btn btn-primary">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="instructions1" class="row mx-auto text-center">
+      <div class="col-7 justify-content-center mx-auto">
+        <div>
+          <div class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Instructions</h1>
+            <p class="lead" style="color: red">
+              Please read the following carefully
             </p>
           </div>
 
+          <h1>
+            Step 1: Enter words describing the person in the video.
+          </h1>
+
+          <!-- gif goes here -->
           <p>
-            You will be shown a video player. Underneath the video player,
-            there will be a textbox.
+            Pause the video whenever you want to enter words describing the person in the video.
           </p>
           <p>
-            You can write <b>single words</b> in this textbox. You will make a
-            list of these words to submit each time you pause.
+            Please enter one word at a time, but you can enter multiple words each time you pause (see video). For
+            example, if at a certain point you feel like the person is being an annoying man, please enter the terms
+            “man” and “annoying” separately when you pause. Order does not matter.
           </p>
           <p>
-            For example, if you think the person is being annoying, pause the
-            video and write 'annoying'. If you see this person as a man, write
-            'man'.
-          </p>
-          <p>
-            Then, you can submit your list of words, which will include both
-            'man' and 'annoying' for the time you paused.
+            Enter whatever comes to mind spontaneously. There are no limits on what you enter!
           </p>
 
-          <p>
-            We are interested in any type of impression you might form about
-            this person, including who
-            <b>you think they are, who they identity as, what type of
-              personality they have, what they are thinking, what they are
-              feeling, etc.</b>
-          </p>
+          <div class="alert alert-info text-center">
+            <p>
+              Note there is a minimum amount of time that needs to pass between each time you pause the video (2
+              seconds).
+            </p>
+          </div>
 
           <button id="next-instruct" type="submit" class="mx-auto text-center btn btn-primary">
             Next
@@ -121,7 +152,95 @@
     </div>
 
     <div id="instructions2" class="row mx-auto text-center">
-      <div class="col-8 justify-content-center mx-auto">
+      <div class="col-7 justify-content-center mx-auto">
+        <div>
+          <div class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Instructions</h1>
+            <p class="lead" style="color: red">
+              Please read the following carefully
+            </p>
+          </div>
+
+          <h1>
+            Step 2: Sort the words that you entered.
+          </h1>
+
+          <!-- gif goes here -->
+          <p>
+            Once you finish watching the video, drag and drop the words that you entered into categories (described
+            below). Don't overthink how you sort the words, go with your gut. And if one doesn't feel like it fits, you
+            can always put it in the “Other” category.
+          </p>
+          <p>
+            <b>Please read the category descriptions carefully below:</b>
+          </p>
+          <div class="row">
+            <div class="col alert alert-primary text-center">
+              <h2>Mental states</h2>
+              <p>
+                Mental states are the thoughts, feelings, and experiences that make up a person's mind. Mental states
+                can involve thinking, such as beliefs, knowledge, and memories.
+              </p>
+              <p>Ex. What are they thinking about?
+                Scheming, going to fail a test, planning a birthday party, etc.</p>
+            </div>
+            <div class="col alert alert-dark  text-center">
+              <h2>Personality traits</h2>
+              <p>
+                Personality traits are enduring patterns of thought, feeling, and behavior that make up a person's
+                personality.
+              </p>
+              <p>Ex. What is their personality? They are a thoughtful person, an honest person, etc.</p>
+            </div>
+            <div class="col alert alert-danger text-center">
+              <h2>Emotions</h2>
+              <p>
+                Emotions are feelings that are associated with a particular thought or experience. They can be positive
+                or negative, and they can range in intensity from mild to strong.
+              </p>
+              <p>Ex. What are they feeling? Happy, sad,
+                etc.</p>
+            </div>
+            <div class="col alert alert-warning text-center">
+              <h2>Identity</h2>
+              <p>
+                Social identities are the roles that people play in society. They can be based on factors such as
+                gender, race, ethnicity, religion, and sexual orientation, or membership to organizations, political
+                parties, or sports teams.
+              </p>
+              <p>Ex. Who are they? Male, construction worker, gay</p>
+            </div>
+            <div class="col alert alert-success text-center">
+              <h2>Other</h2>
+              <p>
+                Put any word that does not fit into the other categories here.
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8 alert alert-info mx-auto text-center">
+              <h2>What's the difference between a mental state and emotion? Aren't emotions feelings?</h2>
+              <p>Mental states and emotions are overlapping concepts, but they are not the same thing. Mental states are
+                broader than emotions, and they can include things like thoughts, beliefs, and memories. Emotions are a
+                specific type of mental state that are associated with a particular thought or experience.
+              </p>
+              <p>For example, you might have the mental state of believing that you are going to fail a test. This is a
+                mental state that is not an emotion. However, if you start to feel anxious or stressed about the test,
+                then you are experiencing an emotion.
+              </p>
+            </div>
+          </div>
+          <p>
+            <button id="next-instruct2" type="submit" class="mx-auto text-center btn btn-primary">
+              Next
+            </button>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="instructions3" class="row mx-auto text-center">
+      <div class="col-7 justify-content-center mx-auto">
         <div>
           <div id="instruction-title" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
             <h1 class="display-4">Instructions</h1>
@@ -130,24 +249,15 @@
             </p>
           </div>
 
-          <p>
-            Anything that comes to mind is great! Critically, you do not need
-            to touch on all of these potential types of impression each time;
-            just go with whatever comes to mind!
-          </p>
+          <h1>
+            Step 3: Form a final impression.
+          </h1>
 
+          <!-- gif goes here -->
           <p>
-            We ask that you respond using <i>single-word adjectives.</i> We
-            ask that you submit each word separately before submitting a list
-            of them.
-          </p>
-
-          <p><b>Don't overthink it, just go with your gut.</b></p>
-
-          <p>
-            <b>The video must be paused to make an entry. You can stop the
-              video whenever you like, but once you pause,
-              <i>you must write at least 1 word before resuming.</i></b>
+            After sorting all of the words you entered while watching the video, please add or delete any words to form
+            your final impression. Think of this as a list of words you'd use to describe this person to someone else, a
+            summary of who they are.
           </p>
 
           <p>Press the button below to get started when you are ready.</p>
@@ -300,33 +410,43 @@
             <table class="table table-bordered" id="favorites-table">
               <thead>
                 <tr class="d-flex">
-                  <th class="col-3" data-toggle="tooltip" data-placement="top" title="What are they thinking about?">
-                    Mental states
+                  <th class="col mx-auto text-center">
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="What are they thinking about?">Mental
+                      states</a>
                   </th>
-                  <th class="col-3" data-toggle="tooltip" data-placement="top" title="Who are they?">
-                    Traits
+                  <th class="col mx-auto text-center">
+                    <a href="#" data-toggle="tooltip" data-placement="top"
+                      title="What is their personality?">Personality traits</a>
                   </th>
-                  <th class="col-3" data-toggle="tooltip" data-placement="top" title="What are they feeling?">
-                    Emotions
+                  <th class="col mx-auto text-center" data-toggle="tooltip" data-placement="top"
+                    title="What are they feeling?">
+                    <a href="#">Emotions</a>
                   </th>
-                  <th class="col-3" data-toggle="tooltip" data-placement="top" title="What is their personality?">
-                    Identity
+                  <th class="col mx-auto text-center">
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="Who are they?">Identity</a>
+                  </th>
+                  <th class="col mx-auto text-center">
+                    <a href="#" data-toggle="tooltip" data-placement="top"
+                      title="Put any word that does not fit into the above categories here.">Other</a>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="d-flex">
-                  <td class="col-3 sortable-list">
+                  <td class="col sortable-list">
                     <div class="list-group sortable-list" id="mental-state-sorter"></div>
                   </td>
-                  <td class="col-3 sortable-list">
+                  <td class="col sortable-list">
                     <div class="list-group sortable-list" id="trait-sorter"></div>
                   </td>
-                  <td class="col-3 sortable-list">
+                  <td class="col sortable-list">
                     <div class="list-group sortable-list" id="emotion-sorter"></div>
                   </td>
-                  <td class="col-3 sortable-list">
+                  <td class="col sortable-list">
                     <div class="list-group sortable-list" id="identity-sorter"></div>
+                  </td>
+                  <td class="col sortable-list">
+                    <div class="list-group sortable-list" id="other-sorter"></div>
                   </td>
                 </tr>
               </tbody>
@@ -644,13 +764,13 @@
       <div class="col d-flex justify-content-center mx-auto text-center px-3 pt-md-1">
         <form id="feedback-form" class="survey" data-toggle="validator" role="form">
           <div class="form-group">
-            <label for="feedback-textarea">Please let us know if any part of the study was confusing,
+            <label for="feedback-textarea" class="mb-3">Please let us know if any part of the study was confusing,
               unclear, or in need of improvement. We appreciate your feedback
               greatly!</label>
             <textarea id="feedback-textarea" name="feedback-textarea" cols="40" rows="5"
-              class="form-control"></textarea>
+              class="form-control mb-3"></textarea>
           </div>
-          <div class="form-group">
+          <div class="form-group mb-3">
             <button name="submit" type="submit" class="btn btn-primary">Submit</button>
           </div>
         </form>
