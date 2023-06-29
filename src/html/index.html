@@ -89,9 +89,8 @@
           <ul class="list-group">
             <li class="list-group-item">1. You will watch videos and write down anything that comes to mind about the
               person in the video. Truly anything about the person is a suitable answer.</li>
-            <li class="list-group-item">2. After watching the video, you will sort your impressions into categories
-              (more
-              on that soon).</li>
+            <li class="list-group-item">2. After watching the video, you will rate the person on several attributes.
+            </li>
             <li class="list-group-item">3. After sorting, you will create a final impression of the person in the video,
               deleting any words that you entered while watching the video and adding any others that you feel like to
               summarize who the person is.</li>
@@ -134,7 +133,8 @@
             </p>
           </video>
           <p>
-            Pause the video whenever you want to enter words describing the person in the video.
+            Pause the video whenever you want to enter words describing the person in the video. You can pause by
+            clicking anywhere on the video.
           </p>
           <p>
             Please enter one word at a time, but you can enter multiple words each time you pause (see video). For
@@ -185,68 +185,23 @@
             </p>
           </video>
           <p>
-            Once you finish watching the video, drag and drop the words that you entered into categories (described
-            below). Don't overthink how you sort the words, go with your gut. And if one doesn't feel like it fits, you
-            can always put it in the “Other” category.
+            Once you finish watching the video, you will rate the person in the video on several attributes using a
+            slider. Please go with your gut feelings, and don't overthink it. You will be evaluating the person on these
+            attributes:
           </p>
           <p>
             <b>Please read the category descriptions carefully below:</b>
           </p>
           <div class="row">
-            <div class="col alert alert-primary text-center">
-              <h2>Mental states</h2>
-              <p>
-                Mental states are the thoughts, feelings, and experiences that make up a person's mind. Mental states
-                can involve thinking, such as beliefs, knowledge, and memories.
-              </p>
-              <p>Ex. What are they thinking about?
-                Scheming, going to fail a test, planning a birthday party, etc.</p>
-            </div>
-            <div class="col alert alert-dark  text-center">
-              <h2>Personality traits</h2>
-              <p>
-                Personality traits are enduring patterns of thought, feeling, and behavior that make up a person's
-                personality.
-              </p>
-              <p>Ex. What is their personality? They are a thoughtful person, an honest person, etc.</p>
-            </div>
-            <div class="col alert alert-danger text-center">
-              <h2>Emotions</h2>
-              <p>
-                Emotions are feelings that are associated with a particular thought or experience. They can be positive
-                or negative, and they can range in intensity from mild to strong.
-              </p>
-              <p>Ex. What are they feeling? Happy, sad,
-                etc.</p>
-            </div>
-            <div class="col alert alert-warning text-center">
-              <h2>Identity</h2>
-              <p>
-                Social identities are the roles that people play in society. They can be based on factors such as
-                gender, race, ethnicity, religion, and sexual orientation, or membership to organizations, political
-                parties, or sports teams.
-              </p>
-              <p>Ex. Who are they? Male, construction worker, gay</p>
-            </div>
-            <div class="col alert alert-success text-center">
-              <h2>Other</h2>
-              <p>
-                Put any word that does not fit into the other categories here.
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-8 alert alert-info mx-auto text-center">
-              <h2>What's the difference between a mental state and emotion? Aren't emotions feelings?</h2>
-              <p>Mental states and emotions are overlapping concepts, but they are not the same thing. Mental states are
-                broader than emotions, and they can include things like thoughts, beliefs, and memories. Emotions are a
-                specific type of mental state that are associated with a particular thought or experience.
-              </p>
-              <p>For example, you might have the mental state of believing that you are going to fail a test. This is a
-                mental state that is not an emotion. However, if you start to feel anxious or stressed about the test,
-                then you are experiencing an emotion.
-              </p>
-            </div>
+            <ul class="list-group">
+              <li class="list-group-item">1. Openness to new experiences</li>
+              <li class="list-group-item">2. Conscientiousness</li>
+              <li class="list-group-item">3. Extroversion</li>
+              <li class="list-group-item">4. Agreeableness</li>
+              <li class="list-group-item">5. Neuroticism</li>
+              <li class="list-group-item">6. Warmth</li>
+              <li class="list-group-item">7. Competence</li>
+            </ul>
           </div>
           <p>
             <button id="next-instruct2" type="submit" class="mx-auto text-center btn btn-primary">
@@ -282,7 +237,7 @@
             </p>
           </video>
           <p>
-            After sorting all of the words you entered while watching the video, please add or delete any words to form
+            After rating the person on several attributes, please add or delete any words to form
             your final impression. Think of this as a list of words you'd use to describe this person to someone else, a
             summary of who they are.
           </p>
@@ -400,7 +355,8 @@
           </div>
         </div>
       </div>
-      <div id="sorting-body">
+
+      <!--       <div id="sorting-body">
         <div id="sorting-title" class="header px-3 pt-md-1 mx-auto text-center">
           <h1 class="display-4">Sorting Words</h1>
           <p class="lead" style="color: red">
@@ -486,7 +442,77 @@
             </table>
           </div>
         </div>
+      </div> -->
+
+      <!-- Rating Section -->
+      <div id="rating-body" class="container" style="display: none;">
+        <div id="rating-title" class="header px-3 pt-md-1 mx-auto text-center">
+          <h1 class="display-4">Rating Impressions</h1>
+          <p class="lead" style="color: red">
+            Please read the following carefully
+          </p>
+        </div>
+        <div class="col-6 justify-content-center mx-auto">
+          <div class="header mx-auto text-center">
+            <p class="display-8">
+              <b>Rate the person in the video on the following parameters.</b>
+            </p>
+          </div>
+        </div>
+
+        <form id="rating-form" class="survey mx-auto col-4 text-center" data-toggle="validator" role="form">
+          <div class="mb-3">
+            <label for="openness" class="form-label">Open to new experiences</label>
+            <label for="" class="form-label float-start">Least</label>
+            <label for="" class="form-label float-end">Most</label>
+            <input type="range" class="form-range" id="openness" name="openness" min="0" max="10" step="1" value="5">
+          </div>
+          <div class="mb-3">
+            <label for="conscientiousness" class="form-label">Conscientious</label>
+            <label for="" class="form-label float-start">Least</label>
+            <label for="" class="form-label float-end">Most</label>
+            <input type="range" class="form-range" id="conscientiousness" name="conscientiousness" min="0" max="10"
+              step="1" value="5">
+          </div>
+          <div class="mb-3">
+            <label for="extroversion" class="form-label">Extroverted</label>
+            <label for="" class="form-label float-start">Least</label>
+            <label for="" class="form-label float-end">Most</label>
+            <input type="range" class="form-range" id="extroversion" name="extroversion" min="0" max="10" step="1"
+              value="5">
+          </div>
+          <div class="mb-3">
+            <label for="agreeableness" class="form-label">Agreeable</label>
+            <label for="" class="form-label float-start">Least</label>
+            <label for="" class="form-label float-end">Most</label>
+            <input type="range" class="form-range" id="agreeableness" name="agreeableness" min="0" max="10" step="1"
+              value="5">
+          </div>
+          <div class="mb-3">
+            <label for="neuroticism" class="form-label">Neurotic</label>
+            <label for="" class="form-label float-start">Least</label>
+            <label for="" class="form-label float-end">Most</label>
+            <input type="range" class="form-range" id="neuroticism" name="neuroticism" min="0" max="10" step="1"
+              value="5">
+          </div>
+          <div class="mb-3">
+            <label for="warmth" class="form-label">Warm</label>
+            <label for="" class="form-label float-start">Least</label>
+            <label for="" class="form-label float-end">Most</label>
+            <input type="range" class="form-range" id="warmth" name="warmth" min="0" max="10" step="1" value="5">
+          </div>
+          <div class="mb-3">
+            <label for="competence" class="form-label">Competent</label>
+            <label for="" class="form-label float-start">Least</label>
+            <label for="" class="form-label float-end">Most</label>
+            <input type="range" class="form-range" id="competence" name="competence" min="0" max="10" step="1"
+              value="5">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit Ratings</button>
+        </form>
       </div>
+
+
       <div id="final-impression-body">
         <div id="final-title" class="header px-3 pt-md-1 mx-auto text-center">
           <h1 class="display-4">Final Impressions</h1>

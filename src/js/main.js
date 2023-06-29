@@ -71,7 +71,7 @@ var subj_id = null;
 
 //Video list, currently must be manually updated
 const videos = [
-  "sample_audition_tape.mp4",
+  "on_my_block.mp4",
   "usc_comedic_monologue.mp4",
   "yale_school_drama.mp4",
 ];
@@ -188,6 +188,7 @@ $("#start-task").on("click", function () {
   mainVideo.src({ type: "video/mp4", src: "video/" + videos[current_vid] });
   mainVideo.controlBar.progressControl.disable();
   mainVideo.controlBar.playToggle.enable();
+  mainVideo.controlBar.hide();
   mainVideo.options({
     userActions: {
       click: true,
@@ -305,16 +306,21 @@ mainVideo.on("play", function () {
 mainVideo.on("ended", function () {
   $("#experiment-body").hide();
 
-  //Skip sorting page if participant submitted zero words
+  $("#rating-body").show();
+
+  mainVideo.pause();
+  videoMode = false;
+
+  /*   //Skip sorting page if participant submitted zero words
   if (Object.keys(descriptors).length == 0) {
     current_terms = [];
     skippedCategories = true;
     $("#final-submit").attr("disabled", "disabled");
     $("#final-impression-body").show();
-  }
+  } */
 
   //Otherwise, show sorting screen
-  else {
+  /* else {
     $("#sorting-body").show();
     $("#sorting-submit").attr("disabled", "disabled");
 
@@ -335,10 +341,10 @@ mainVideo.on("ended", function () {
           descriptor +
           "</li>"
       );
-    }
+    } */
 
-    //Initialize SortableJS sortables
-    let main = Sortable.create($("#main-sorter")[0], {
+  //Initialize SortableJS sortables
+  /* let main = Sortable.create($("#main-sorter")[0], {
       animation: 100,
       group: "shared",
       draggable: ".list-group-item",
@@ -393,11 +399,82 @@ mainVideo.on("ended", function () {
       group: "shared",
       draggable: ".list-group-item",
       dataIdAttr: "id",
-    });
+    }); */
+  //}
+});
+
+//Submit rating page
+$("#rating-form").on("submit", function (event) {
+  event.preventDefault();
+  $("#rating-body").hide();
+  $("#final-impression-body").show();
+
+  // Get the ratings from the form
+  let ratings = {
+    openness: $("#openness").val(),
+    conscientiousness: $("#conscientiousness").val(),
+    extroversion: $("#extroversion").val(),
+    agreeableness: $("#agreeableness").val(),
+    neuroticism: $("#neuroticism").val(),
+    warmth: $("#warmth").val(),
+    competence: $("#competence").val(),
+  };
+
+  //Prepare firebase submission
+  let submission = {
+    ...subj_id,
+    data: {
+      ratings: ratings,
+    },
+    video: videos[current_vid],
+  };
+
+  try {
+    const docRef = setDoc(
+      doc(
+        db,
+        "studies/trial_study_1/participants/" +
+          submission.subj_id +
+          "/video_responses",
+        submission.video
+      ),
+      submission.data
+    );
+    console.log("Document written with ID: ", docRef.id);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+
+  //Prepare final impression page
+  current_terms = [];
+  let current_descriptors = [];
+
+  for (const descriptor of descriptors) {
+    if (!current_descriptors.includes(descriptor.name)) {
+      current_descriptors.push(descriptor.name);
+    }
+  }
+  for (const descriptor of current_descriptors) {
+    $("#final-sorter").append(
+      '<div class="justify-content-center"><li class="list-group-item" id=' +
+        descriptor.replaceAll(" ", "-") +
+        "> " +
+        descriptor +
+        '<button class="item-delete" type="button" id="' +
+        descriptor.replaceAll(" ", "-") +
+        '-delete">✖</button></li></div>'
+    );
+    current_terms.push(descriptor);
+    attach_delete_listener(descriptor);
+  }
+
+  console.log(current_terms);
+  if (current_terms.length > 0) {
+    $("#final-submit").removeAttr("disabled");
   }
 });
 
-//Submit sorting page
+/* //Submit sorting page
 $("#sorting-submit").on("click", function () {
   $("#sorting-body").hide();
   $("#final-impression-body").show();
@@ -496,7 +573,7 @@ $("#sorting-submit").on("click", function () {
   //     draggable: '.list-group-item',
   //     dataIdAttr: 'id'
   // })
-});
+}); */
 
 //Event when new words are added on final impressions page
 $("#final-descript-form").on("submit", function (event) {
@@ -600,6 +677,7 @@ $("#final-submit").on("click", function () {
     mainVideo = videojs("main-video");
     mainVideo.controlBar.progressControl.disable();
     mainVideo.controlBar.playToggle.enable();
+    mainVideo.controlBar.hide();
     mainVideo.options({
       userActions: {
         click: true,
@@ -611,7 +689,8 @@ $("#final-submit").on("click", function () {
     $("#too-early-notice").hide();
     $("#cannot-unpause-notice").hide();
     $("#cannot-add-notice").hide();
-    $("#sorting-body").hide();
+    //$("#sorting-body").hide();
+    $("#rating-body").hide();
     $("#final-impression-body").hide();
     $("#final-cannot-add-notice").hide();
     $("#experiment-body").show();
