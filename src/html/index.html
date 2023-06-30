@@ -17,16 +17,14 @@
 </head>
 
 <body>
-  <div id="cover"></div>
-
-  <div id="welcome" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Welcome to the experiment</h1>
-    <p class="lead">
-      Please answer the following questions to determine your eligility.
-    </p>
-  </div>
-
   <div class="container-fluid">
+    <!-- SCREENER PAGE -->
+    <div id="welcome" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center row">
+      <h1 class="display-4">Welcome to the experiment</h1>
+      <p class="lead">
+        Please answer the following questions to determine your eligility.
+      </p>
+    </div>
     <div id="screener" class="row">
       <div class="col d-flex justify-content-center mx-auto">
         <form id="info-form" class="survey" data-toggle="validator" role="form">
@@ -53,6 +51,7 @@
       </div>
     </div>
 
+    <!-- REJECTION PAGE FOR NON-NATIVE SPEAKER -->
     <div id="reject" class="row">
       <div class="col d-flex justify-content-center mx-auto">
         <h1>
@@ -62,6 +61,7 @@
       </div>
     </div>
 
+    <!-- INSTRUCTIONS INTRODUCTION PAGE -->
     <div id="instructions-landing" class="row mx-auto text-center">
       <div class="col-7 justify-content-center mx-auto">
         <div>
@@ -109,6 +109,7 @@
       </div>
     </div>
 
+    <!-- INSTRUCTIONS FOR STEP 1 -->
     <div id="instructions1" class="row mx-auto text-center">
       <div class="col-7 justify-content-center mx-auto">
         <div>
@@ -161,6 +162,8 @@
       </div>
     </div>
 
+
+    <!-- INSTRUCTIONS FOR STEP 2 -->
     <div id="instructions2" class="row mx-auto text-center">
       <div class="col-7 justify-content-center mx-auto">
         <div>
@@ -212,6 +215,7 @@
       </div>
     </div>
 
+    <!-- INSTRUCTIONS FOR STEP 3 -->
     <div id="instructions3" class="row mx-auto text-center">
       <div class="col-7 justify-content-center mx-auto">
         <div>
@@ -258,6 +262,7 @@
       </div>
     </div>
 
+    <!-- VIDEO SECTION -->
     <div id="video-section">
       <div id="experiment-body" class="card">
         <div class="row pt-4 card-header">
@@ -271,6 +276,7 @@
             </div>
           </div>
         </div>
+        <!-- VIDEO -->
         <div class="card-body">
           <div id="vid-row" class="row">
             <div id="vid-col" class="col-6 d-flex justify-content-center mx-auto my-1">
@@ -286,6 +292,7 @@
             </div>
           </div>
 
+          <!-- LIST OF INPUTTED WORDS  -->
           <div class="row" id="response-columns">
             <div class="col justify-content-center">
               <table class="table">
@@ -305,6 +312,7 @@
             </div>
           </div>
 
+          <!-- ALERTS -->
           <div class="row" id="pause-notice" style="color: red">
             <div class="col d-flex justify-content-center mx-auto">
               <h6>Pause the video to make an entry.</h6>
@@ -325,6 +333,7 @@
               <h6>You cannot add a word already in the list.</h6>
             </div>
           </div>
+          <!-- INPUT FOR WORDS -->
           <div class="row">
             <div class="col d-flex justify-content-center mx-auto text-center">
               <div id="info-form" class="survey" data-toggle="validator" role="form">
@@ -347,6 +356,7 @@
                     </div>
                   </div>
                 </form>
+                <!-- SUBMIT WORD LIST -->
                 <button id="descript-submit" class="btn btn-primary my-1" disabled>
                   Submit Word List
                 </button>
@@ -356,6 +366,7 @@
         </div>
       </div>
 
+      <!-- REMOVED SORTING SECTION -->
       <!--       <div id="sorting-body">
         <div id="sorting-title" class="header px-3 pt-md-1 mx-auto text-center">
           <h1 class="display-4">Sorting Words</h1>
@@ -444,7 +455,7 @@
         </div>
       </div> -->
 
-      <!-- Rating Section -->
+      <!-- PERSONALITY RATING SECTION -->
       <div id="rating-body" class="container" style="display: none;">
         <div id="rating-title" class="header px-3 pt-md-1 mx-auto text-center">
           <h1 class="display-4">Rating Impressions</h1>
@@ -513,6 +524,7 @@
       </div>
 
 
+      <!-- FINAL IMPRESSIONS SECTION -->
       <div id="final-impression-body">
         <div id="final-title" class="header px-3 pt-md-1 mx-auto text-center">
           <h1 class="display-4">Final Impressions</h1>
@@ -577,6 +589,7 @@
       </div>
     </div>
 
+    <!-- DEMOGRAPHICS SECTION -->
     <div id="demographics" class="row">
       <div class="col-8 mx-auto">
         <div>
@@ -816,6 +829,7 @@
       </div>
     </div>
 
+    <!-- FEEDBACK SECTION -->
     <div id="feedback" class="row">
       <div id="feedback-title" class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">Feedback Section</h1>
@@ -836,6 +850,7 @@
       </div>
     </div>
 
+    <!-- FINISHED SECTION -->
     <div id="finished" class="row">
       <div class="col-8 justify-content-center mx-auto">
         <div>

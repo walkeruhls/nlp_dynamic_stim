@@ -15,7 +15,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "video.js/dist/video-js.css";
 import "../css/style.css";
 
-//Firebase config to connect to online database
+//Firebase config to connect to online database (this has some security problems I think due to the api key)
 const firebaseConfig = {
   apiKey: "AIzaSyBAnN60-yIbaJjKoQg1nDFebm2fGgGncgA",
 
@@ -34,7 +34,6 @@ const firebaseConfig = {
 
 //Initialize firebase functions
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 
@@ -49,7 +48,7 @@ signInAnonymously(auth)
     // ...
   });
 
-//Hide all elements that will be shown later
+//Hide all elements that will be shown later (this could really be sorted out better but it works for now)
 $("#reject").hide();
 $("#instructions-landing").hide();
 $("#instructions1").hide();
@@ -67,7 +66,7 @@ $("#cannot-unpause-notice").hide();
 $("#cannot-add-notice").hide();
 $("#final-cannot-add-notice").hide();
 
-var subj_id = null;
+var subj_id = null; //participant id tracker
 
 //Video list, currently must be manually updated
 const videos = [
@@ -75,25 +74,21 @@ const videos = [
   "usc_comedic_monologue.mp4",
   "yale_school_drama.mp4",
 ];
-
-var current_vid = 0;
-
-$("#video-source").attr("src", "video/" + videos[current_vid]);
+var current_vid = 0; //current video tracker
+$("#video-source").attr("src", "video/" + videos[current_vid]); //set video 'src' attribute to video file name
 console.log($("#video-source").attr("src"));
 
-//Declare videojs object with current video as source
-var mainVideo = videojs("main-video");
+var mainVideo = videojs("main-video"); //Declare videojs object with current video as source
 mainVideo.src({ type: "video/mp4", src: "video/" + videos[current_vid] });
 mainVideo.pause();
 var videoMode = false;
-var skippedCategories = false;
+var skippedCategories = false; // previously used to detect whether sorting section should be skipped or not, but no longer needed since sorting section was removed
 var recentTime = -2;
 var instructVideo = null;
 
-//Declare lists of words, etc.
-var descriptors = [];
-var current_terms = [];
-var emotions = null,
+var descriptors = []; // list of descriptor words
+var current_terms = []; // current list of descriptor words (before it's submitted and added to main list)
+var emotions = null, // many of these are now unused due to removal of sorting page
   traits = null,
   mental_states = null,
   identity = null,
@@ -161,6 +156,7 @@ $("#next-instruct-landing").on("click", function () {
   instructVideo.play();
 });
 
+//Show next instructions again
 $("#next-instruct").on("click", function () {
   instructVideo.dispose();
   $("#instructions1").hide();
@@ -169,6 +165,7 @@ $("#next-instruct").on("click", function () {
   instructVideo.play();
 });
 
+//Show next instructions again (again)
 $("#next-instruct2").on("click", function () {
   instructVideo.dispose();
   $("#instructions2").hide();
@@ -429,6 +426,7 @@ $("#rating-form").on("submit", function (event) {
     video: videos[current_vid],
   };
 
+  //Submit to firebase!
   try {
     const docRef = setDoc(
       doc(
@@ -629,7 +627,7 @@ $("#final-submit").on("click", function () {
     },
     video: videos[current_vid],
   };
-  //Submit to firebase. Create new document if sorting section was skipped, otherwise update existing document
+  //Submit to firebase. Create new document if sorting section was skipped (this is now irrelevant), otherwise update existing document
   if (skippedCategories) {
     try {
       const docRef = setDoc(
@@ -714,6 +712,7 @@ $("#final-submit").on("click", function () {
   }
 });
 
+//demographics form: keep track of which boxes are checked each time a new one is checked/unchecked
 $("#demographics-form .checkbox-group").on(
   "change",
   'input[type="checkbox"]',
@@ -725,10 +724,12 @@ $("#demographics-form .checkbox-group").on(
   }
 );
 
+//Demographics form handling
 $("#demographics-form").on("submit", function (event) {
   event.preventDefault();
   $("#demographics").hide();
   $("#feedback").show();
+  //serialize form array to pull its data
   let datastring = $("#demographics-form").serializeArray();
   let demoData = {
     demographics: {
@@ -756,6 +757,7 @@ $("#demographics-form").on("submit", function (event) {
   }
 });
 
+//Feedback form handling
 $("#feedback-form").on("submit", function (event) {
   event.preventDefault();
   $("#feedback").hide();
@@ -776,6 +778,7 @@ $("#feedback-form").on("submit", function (event) {
   }
 });
 
+//Some bootstrap tooltip functions
 $(function () {
   var tooltipTriggerList = [].slice.call(
     document.querySelectorAll('[data-bs-toggle="tooltip"]')
