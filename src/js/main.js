@@ -70,9 +70,9 @@ var subj_id = null; //participant id tracker
 
 //Video list, currently must be manually updated
 const videos = [
-  "on_my_block.mp4",
   "usc_comedic_monologue.mp4",
   "yale_school_drama.mp4",
+  "on_my_block.mp4",
 ];
 var current_vid = 0; //current video tracker
 $("#video-source").attr("src", "video/" + videos[current_vid]); //set video 'src' attribute to video file name
@@ -161,7 +161,7 @@ $("#next-instruct").on("click", function () {
   instructVideo.dispose();
   $("#instructions1").hide();
   $("#instructions2").show();
-  instructVideo = videojs("sorting-vid");
+  instructVideo = videojs("rating-vid");
   instructVideo.play();
 });
 
