@@ -69,9 +69,7 @@ $("#final-cannot-add-notice").hide();
 var subj_id = null; //participant id tracker
 
 //Video list, currently must be manually updated
-const videos = [
-  "yale_school_drama.mp4",
-];
+const videos = ["yale_school_drama.mp4"];
 var current_vid = 0; //current video tracker
 $("#video-source").attr("src", "video/" + videos[current_vid]); //set video 'src' attribute to video file name
 console.log($("#video-source").attr("src"));
@@ -109,7 +107,7 @@ function attach_delete_listener(input) {
 }
 
 //Categorize each word based on the sorted lists that the subject makes on the sorting page.
-function categorizeDescriptors(descriptor_array, category, categoryName) {
+/* function categorizeDescriptors(descriptor_array, category, categoryName) {
   category = category.toArray();
   console.log(category);
   console.log(descriptor_array);
@@ -119,7 +117,7 @@ function categorizeDescriptors(descriptor_array, category, categoryName) {
     }
   }
   return descriptor_array;
-}
+} */
 
 //Submit participant form, reject them if they cannot speak English
 $("#info-form").on("submit", function (event) {
@@ -238,7 +236,7 @@ $("#descript-submit").on("click", function () {
     let descriptor = {
       name: current_terms[i],
       timestamp: mainVideo.currentTime(),
-      category: null,
+      //category: null,
     };
     current_descriptors.push(descriptor);
   }
@@ -607,21 +605,31 @@ $("#final-descript-form").on("submit", function (event) {
 
 //Final impressions submit
 $("#final-submit").on("click", function () {
-  descriptors = [];
   let current_descriptors = [];
+  for (const i in descriptors) {
+    if (current_terms.includes(descriptors[i].name)) {
+      current_descriptors.push(descriptors[i]);
+      current_terms.splice(current_terms.indexOf(descriptors[i].name), 1);
+    }
+  }
   for (const i in current_terms) {
     let descriptor = {
       name: current_terms[i],
+      timestamp: null,
     };
     current_descriptors.push(descriptor);
   }
-  descriptors.push.apply(descriptors, current_descriptors);
+  console.log(current_descriptors);
+  console.log(descriptors);
+  let final_descriptors = [];
+  final_descriptors.push.apply(final_descriptors, current_descriptors);
+  console.log(final_descriptors);
 
   //Prepare firebase submission
   let submission = {
     ...subj_id,
     data: {
-      final_descriptors: descriptors,
+      final_descriptors: final_descriptors,
     },
     video: videos[current_vid],
   };
