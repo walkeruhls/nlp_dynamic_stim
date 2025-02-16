@@ -54,6 +54,8 @@ $("#instructions-landing").hide();
 $("#instructions1").hide();
 $("#instructions2").hide();
 $("#instructions3").hide();
+$("#instructions4").hide();
+$("#instructions5").hide();
 $("#video-section").hide();
 $("#sorting-body").hide();
 $("#final-impression-body").hide();
@@ -157,7 +159,7 @@ $("#next-instruct").on("click", function () {
   instructVideo.dispose();
   $("#instructions1").hide();
   $("#instructions2").show();
-  instructVideo = videojs("rating-vid");
+  instructVideo = videojs("final-vid");
   instructVideo.play();
 });
 
@@ -166,15 +168,28 @@ $("#next-instruct2").on("click", function () {
   instructVideo.dispose();
   $("#instructions2").hide();
   $("#instructions3").show();
-  $("#final-vid").attr("autoplay", "autoplay");
-  instructVideo = videojs("final-vid");
+  $("#rating-vid").attr("autoplay", "autoplay");
+  instructVideo = videojs("rating-vid");
+  instructVideo.play();
+});
+//Show next instructions again (again)
+$("#next-instruct3").on("click", function () {
+  instructVideo.dispose();
+  $("#instructions3").hide();
+  $("#instructions4").show();
+});
+$("#next-instruct4").on("click", function () {
+  $("#instructions4").hide();
+  $("#instructions5").show();
+  $("#decision-vid").attr("autoplay", "autoplay");
+  instructVideo = videojs("decision-vid");
   instructVideo.play();
 });
 
 //Begin task, load video and set options for interaction
 $("#start-task").on("click", function () {
   instructVideo.dispose();
-  $("#instructions3").hide();
+  $("#instructions5").hide();
   $(".instruct-videos").remove();
   $("#video-section").show();
 
