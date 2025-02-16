@@ -32,6 +32,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "acorn": "^8.14.0",
     "bootstrap": "^5.2.3",
     "firebase": "^9.17.1",
     "jquery": "^3.6.3",
